@@ -32,14 +32,11 @@ namespace DeckDJ.Controllers
 
         // POST: ComboPiece/Create
         [HttpPost]
-        [Authorize]
         public ActionResult Create(ComboPiece comboPiece)
         {
-            GetApplicationCookie();
             string url = "AddComboPiece";
 
             string jsonpayload = jss.Serialize(comboPiece);
-
             HttpContent content = new StringContent(jsonpayload);
             content.Headers.ContentType.MediaType = "application/json";
 
