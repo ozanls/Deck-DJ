@@ -1,0 +1,21 @@
+﻿@model DeckDJ.Models.DeckDto
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit Card</h2>
+<form action="/Deck/Update/@Model.DeckId" method="POST">
+    <div>
+        <input type="hidden" name="DeckId" value="@Model.DeckId" />
+    </div>
+    <div>
+        <label for="deckName" class="form-label">Name:</label>
+        <input id="deckName" class="form-control" type="text" name="DeckName" value="@Model.DeckName" />
+    </div>
+    <div>
+        <input type="hidden" name="UserId" value="@Model.UserId" />
+    </div>
+    <div>
+        <input class="btn btn-primary" type="submit" value="Update Deck" />
+    </div>
+</form>

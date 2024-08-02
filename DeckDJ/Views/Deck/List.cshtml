@@ -1,0 +1,27 @@
+﻿@model IEnumerable<DeckDJ.Models.DeckDto>
+@{
+    ViewBag.Title = "List";
+}
+
+<h2>List</h2>
+
+<nav>
+    <a class="dellink" href="/Deck/New/">New Deck</a>
+</nav>
+
+<table class="table">
+    <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Deck Name</th>
+        <th scope="col">User Id</th>
+    </tr>
+    @foreach (var deck in Model) { 
+            <tr>
+                <th scope="row"><a href="/Deck/Details/@deck.DeckId">@deck.DeckId</a></th>
+                <td>@deck.DeckName</td>
+                <td>@deck.UserId</td>
+            </tr>
+            }
+</table>
+
+

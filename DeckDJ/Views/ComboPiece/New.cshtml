@@ -1,0 +1,21 @@
+﻿
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>New Combo Piece</h2>
+<form action="/ComboPiece/Create" method="POST">
+    <div class="mb-3">
+        <label class="form-label" for="DeckId">Deck Id:</label> <input class="form-control" id="DeckId" type="text" name="DeckId"/>
+    </div>
+    <div class="mb-3">
+        <label class="form-label" for="CardId">Card Id:</label> <input class="form-control" id="CardId" type="text" name="CardId"/>
+    </div>
+    <div class="mb-3">
+        <label class="form-label" for="copies">copies:</label> <input class="form-control" id="copies" type="text" name="copies" />
+    </div>
+    <div>
+        <input type="submit" value="Add Card" />
+    </div>
+</form>
+

@@ -1,0 +1,55 @@
+﻿@model DeckDJ.Models.DetailsDeck
+@{
+    ViewBag.Title = "Details";
+}
+
+<div id="containershow">
+    <nav>
+        <a class="navlink" href="/Deck/List">Back To Decks</a>
+        <a class="dellink" href="/Deck/DeleteConfirm/@Model.Deck.DeckId">Delete</a>
+        <a class="navlink" href="/Deck/Edit/@Model.Deck.DeckId">Update</a>
+    </nav>
+    <h2>@Model.Deck.DeckName</h2>
+</div>
+<div>ID: @Model.Deck.DeckId</div>
+<div>UserId: @Model.Deck.UserId</div>
+<div>Name: @Model.Deck.DeckName</div>
+
+<div>
+    <h3>Cards In Deck</h3>
+    <table class="table">
+        <tr>
+            <th scope="col">CardId</th>
+            <th scope="col">CardName</th>
+            <th scope="col">Copies</th>
+            <th scope="col"></th>
+        </tr>
+        @foreach(var card in Model.Cards)
+            {
+                <tr>
+                    <td>@card.Id</td>
+                    <td>@card.Name</td>
+                    <td>@card.Copies</td>
+                    <td><a href="/ComboPieceData/DeleteComboPiece/@card.ComboPieceId">Remove from deck</a></td>
+                </tr>
+            }
+    </table>
+    <div>
+        <h4>Add card to Deck</h4>
+        <form method="POST" action="/ComboPieceData/AddComboPiece/">
+            <select>
+                @foreach(var card in Model.AvailableCards)
+            {
+                <option value="@card.Id">@card.Name</option>
+            }
+            </select>
+        </form>
+    </div>
+</div>
+
+<script src="~/Scripts/admindeck.js"></script>
+<script>
+    window.onload = function () {
+        getCardsInDeck(@Html.Raw(Model.Deck.DeckId));
+    }
+</script>

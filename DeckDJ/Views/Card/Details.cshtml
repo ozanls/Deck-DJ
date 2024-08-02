@@ -1,0 +1,46 @@
+﻿@model DeckDJ.Models.CardDto
+@{
+    ViewBag.Title = "Details";
+}
+
+<div id="containershow">
+    <nav>
+        <a class="navlink" href="/Card/List">Back To Cards</a>
+        <a class="dellink" href="/Card/DeleteConfirm/@Model.Id">Delete</a>
+        <a class="navlink" href="/Card/Edit/@Model.Id">Update</a>
+    </nav>
+    <h2>@Model.Name</h2>
+</div>
+<div>ID: @Model.Id</div>
+<div>Number: @Model.Number</div>
+<div>Name: @Model.Name</div>
+<div>Card Frame: @Model.CardFrame</div>
+<div>Card Type: @Model.CardType</div>
+<div>Attribute: @Model.Attribute</div>
+<div>Level: @Model.Level</div>
+<div>Scale: @Model.Scale</div>
+<div>Attack: @Model.Attack</div>
+<div>Defense: @Model.Defense</div>
+
+<div>
+    <h3>Decks that use this Card</h3>
+    <table class="table">
+        <thead>
+            <th scope="col">ID</th>
+            <th scope="col">DeckId</th>
+            <th scope="col">DeckName</th>
+            <th scope="col">UserId</th>
+            <th scope="col">Category</th>
+        </thead>
+        <tbody id="table-data">
+        </tbody>
+    </table>
+</div>
+
+<script src="~/Scripts/admindeck.js"></script>
+<script>
+    window.onload = function () {
+        getDecksForCards(@Html.Raw(Model.Id));
+    }
+</script>
+
