@@ -1,0 +1,14 @@
+﻿@model AudioApplication.Models.AudioDto
+@{
+    ViewBag.Title = "DeleteConfirm";
+}
+
+<h2>Confirm Delete</h2>
+
+<p> Are you sure you want to delete <i>@Model.AudioName</i>?</p>
+
+<form method="POST" action="/Audio/Delete/@Model.AudioId">
+
+    <input type="submit" value="Confirm Delete" />
+
+</form>

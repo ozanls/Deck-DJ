@@ -1,0 +1,33 @@
+﻿@model AudioApplication.Models.CategoryDto
+
+@{
+    ViewBag.Title = "Show";
+}
+
+<h2>@Model.CategoryName</h2>
+<p><b>Id:</b> @Model.CategoryId</p>
+<a href="/Category/edit/@Model.CategoryId">
+    <div class="button edit" style="
+                                                                        padding:4px;
+                                                                        margin:4px;
+                                                                        color:black;
+                                                                        background-color:lightgray;
+                                                                        border:1px solid black;
+                                                                        border-radius:4px;
+                                                                        text-decoration:none;
+                                                                        width:fit-content
+         ">Edit</div>
+</a>
+<a href="/Category/DeleteConfirm/@Model.CategoryId">
+    <div class="button delete" style="
+                                                                        padding:4px;
+                                                                        margin:4px;
+                                                                        color:white;
+                                                                        background-color:#ca0000;
+                                                                        border:1px solid black;
+                                                                        border-radius:4px;
+                                                                        text-decoration:none;
+                                                                        width:fit-content
+
+         ">Delete</div>
+</a>

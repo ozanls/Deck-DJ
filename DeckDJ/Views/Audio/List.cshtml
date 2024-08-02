@@ -1,0 +1,19 @@
+﻿@model IEnumerable<AudioApplication.Models.AudioDto>
+@{
+    ViewBag.Title = "List";
+}
+
+<h2 class="page-title">All Audios</h2>
+
+<ul class="list">
+    @foreach (var Audio in Model)
+    {
+        <li>
+
+            <a href="Show/@Audio.AudioId">
+                @Audio.AudioName
+            </a>
+        </li>
+
+    }
+</ul>

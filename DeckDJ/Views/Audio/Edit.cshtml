@@ -1,0 +1,34 @@
+﻿@model AudioApplication.Models.AudioDto
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2 class="object-title">Edit @Model.AudioName</h2>
+
+<div class="form-div">
+    <form class="form" action="/audio/update/@Model.AudioId" method="POST">
+        <div class="form__input">
+            <label class="label">Audio Name:</label>
+            <input type="text" name="AudioName" value="@Model.AudioName" />
+        </div>
+        <div class="form__input">
+            <label class="label">Audio URL:</label>
+            <input type="text" name="AudioURL" value="@Model.AudioURL" />
+        </div>
+        <div class="form__input">
+            <label class="label">Audio Length:</label>
+            <input type="number" name="AudioLength" value="@Model.AudioLength" />
+        </div>
+        <div class="form__input">
+            <label class="label">Audio Upload Date:</label>
+            <input type="datetime" name="AudioTimestamp" value="@Model.AudioTimestamp" />
+        </div>
+        <div class="form__input">
+            <label class="label">Audio Uploader Id:</label>
+            <input type="number" name="AudioUploaderId" value="@Model.AudioUploaderId" />
+        </div>
+        <input class="submit" type="submit" value="Save Changes" />
+    </form>
+</div>
+

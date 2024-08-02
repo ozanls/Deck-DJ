@@ -1,0 +1,44 @@
+﻿@model IEnumerable<AudioApplication.Models.CategoryDto>
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2 class="object-title">Upload an Audio</h2>
+
+<div class="form-div">
+
+    <form class="form" action="/audio/create" method="POST">
+        <div class="form__input">
+            <label class="label">Audio Name:</label>
+            <input type="text" name="AudioName" />
+        </div>
+        <div class="form__input">
+            <label class="label">Audio URL:</label>
+            <input type="text" name="AudioURL" />
+        </div>
+        <div class="form__input">
+            <label class="label">Audio Length:</label>
+            <input type="number" name="AudioLength" />
+        </div>
+        <input type="hidden" id="datetime" name="AudioTimestamp" />
+        <div class="form__input">
+            <label class="label">Audio Uploader Id:</label>
+            <input type="number" name="AudioUploaderId" />
+        </div>
+        <div class="form__input">
+            <label class="label">Category Id:</label>
+            <select type="number" name="CategoryId">
+                @foreach (var Category in Model)
+                {
+                    <option style="width:189px" value="@Category.CategoryId">@Category.CategoryName</option>
+                }
+            </select>
+        </div>
+        <input type="submit" value="Upload Audio" />
+    </form>
+</div>
+    <script>
+        datetimeInput = document.getElementById("datetime");
+        datetimeInput.value = new Date().toISOString();
+    </script>
