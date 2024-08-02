@@ -9,13 +9,13 @@
         <input type="hidden" name="ComboPieceId" value="@Model.ComboPieceId" />
     </div>
     <div class="mb-3">
-        <label class="form-label" for="DeckId">Deck Id:</label> <input class="form-control" id="DeckId" type="text" name="DeckId" value="@Model.DeckId" />
+        <input id="DeckId" type="hidden" name="DeckId" value="@Model.DeckId" />
     </div>
     <div class="mb-3">
-        <label class="form-label" for="CardNumber">Card Number:</label> <input class="form-control" id="CardNumber" type="text" name="CardNumber" value="@Model.CardNumber" />
+        <input id="CardId" type="hidden" name="CardId" value="@Model.CardId" />
     </div>
     <div class="mb-3">
-        <label class="form-label" for="Category">Category:</label> <input class="form-control" id="Category" type="text" name="Category" value="@Model.Category" />
+        <label class="form-label" for="copies">Copies:</label> <input class="form-control" id="copies" type="number" name="copies" value="@Model.copies" />
     </div>
     <div class="mb-3">
         <input type="submit" value="Update Combo Piece" />

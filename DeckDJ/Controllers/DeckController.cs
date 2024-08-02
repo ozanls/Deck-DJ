@@ -22,7 +22,7 @@ namespace DeckDJ.Controllers
         static DeckController()
         {
             client = new HttpClient();
-            client.BaseAddress = new Uri("https://localhost:44357/api/DeckData/");
+            client.BaseAddress = new Uri("https://localhost:44357/api/");
         }
 
         // GET: Deck/New
@@ -39,7 +39,7 @@ namespace DeckDJ.Controllers
         public ActionResult Create(Deck deck)
         {
             GetApplicationCookie();
-            string url = "AddDeck";
+            string url = "DeckData/AddDeck";
 
             string jsonpayload = jss.Serialize(deck);
 
@@ -63,7 +63,7 @@ namespace DeckDJ.Controllers
         public ActionResult List()
         {
             GetApplicationCookie();
-            string url = "ListDecks";
+            string url = "DeckData/ListDecks";
             HttpResponseMessage response = client.GetAsync(url).Result;
             Debug.WriteLine(response.Content.ReadAsStringAsync().Result.ToString());
 
@@ -80,24 +80,19 @@ namespace DeckDJ.Controllers
 
             DetailsDeck ViewModel = new DetailsDeck();
 
-            string url = "FindDeck/" + id;
+            string url = "DeckData/FindDeck/" + id;
             HttpResponseMessage response = client.GetAsync(url).Result;
 
             DeckDto selectedDeck = response.Content.ReadAsAsync<DeckDto>().Result;
 
             ViewModel.Deck = selectedDeck;
 
-            url = "ComboData/GetCardsInDeck/" + id;
+            url = "ComboPieceData/GetCombosInDeck/" + id;
             response = client.GetAsync(url).Result;
-            IEnumerable<CardDto> cards = response.Content.ReadAsAsync<IEnumerable<CardDto>>().Result;
+            Debug.Write(response.Content.ReadAsStringAsync().Result);
+            IEnumerable<ComboPieceDto> comboPieces = response.Content.ReadAsAsync<IEnumerable<ComboPieceDto>>().Result;
 
-            ViewModel.Cards = cards;
-
-            url = "ComboData/GetCardsNotInDeck/" + id;
-            response = client.GetAsync(url).Result;
-            IEnumerable<CardDto> availCards = response.Content.ReadAsAsync<IEnumerable<CardDto>>().Result;
-
-            ViewModel.AvailableCards = availCards;
+            ViewModel.ComboPieces = comboPieces;
            
 
             return View(ViewModel);
@@ -108,7 +103,7 @@ namespace DeckDJ.Controllers
         public ActionResult MyDecks()
         {
             GetApplicationCookie();
-            string url = "UserDecks/" + User.Identity.GetUserId();
+            string url = "DeckData/UserDecks/" + User.Identity.GetUserId();
             HttpResponseMessage response = client.GetAsync(url).Result;
             Debug.WriteLine(response.Content.ReadAsStringAsync().Result);
             Debug.WriteLine(response.Content.ReadAsStringAsync().Result);
@@ -125,7 +120,7 @@ namespace DeckDJ.Controllers
         public ActionResult Edit(int id)
         {
             GetApplicationCookie();
-            string url = "FindDeck/" + id;
+            string url = "DeckData/FindDeck/" + id;
             HttpResponseMessage response = client.GetAsync(url).Result;
 
             DeckDto selectedDeck = response.Content.ReadAsAsync<DeckDto>().Result;
@@ -138,7 +133,7 @@ namespace DeckDJ.Controllers
         public ActionResult EditDeck(int id)
         {
             GetApplicationCookie();
-            string url = "FindDeck/" + id;
+            string url = "DeckData/FindDeck/" + id;
             HttpResponseMessage response = client.GetAsync(url).Result;
 
             DeckDto selectedDeck = response.Content.ReadAsAsync<DeckDto>().Result;
@@ -152,7 +147,7 @@ namespace DeckDJ.Controllers
         public ActionResult Update(int id, Deck deck)
         {
             GetApplicationCookie();
-            string url = "UpdateDeck/" + id;
+            string url = "DeckData/UpdateDeck/" + id;
             string jsonpayload = jss.Serialize(deck);
             HttpContent content = new StringContent(jsonpayload);
             content.Headers.ContentType.MediaType = "application/json";
@@ -172,7 +167,7 @@ namespace DeckDJ.Controllers
         public ActionResult DeleteConfirm(int id)
         {
             GetApplicationCookie();
-            string url = "FindDeck/" + id;
+            string url = "DeckData/FindDeck/" + id;
             HttpResponseMessage response = client.GetAsync(url).Result;
             DeckDto selectedDeck = response.Content.ReadAsAsync<DeckDto>().Result;
             return View(selectedDeck);
@@ -185,7 +180,7 @@ namespace DeckDJ.Controllers
         public ActionResult Delete(int id)
         {
             GetApplicationCookie();
-            string url = "DeleteDeck/" + id;
+            string url = "DeckData/DeleteDeck/" + id;
             HttpContent content = new StringContent("");
             content.Headers.ContentType.MediaType = "application/json";
             HttpResponseMessage response = client.PostAsync(url, content).Result;

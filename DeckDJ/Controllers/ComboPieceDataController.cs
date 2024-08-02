@@ -34,7 +34,6 @@ namespace DeckDJ.Controllers
         [ResponseType(typeof(ComboPiece))]
         [HttpPost]
         [Route("api/ComboPieceData/AddComboPiece")]
-        [Authorize]
         public IHttpActionResult AddComboPiece(ComboPiece NewComboPiece)
         {
             if (!ModelState.IsValid)
@@ -89,7 +88,6 @@ namespace DeckDJ.Controllers
         [HttpGet]
         [Route("api/ComboPieceData/FindComboPiece/{id}")]
         [ResponseType(typeof(ComboPieceDto))]
-        [Authorize]
         public IHttpActionResult FindComboPiece(int id)
         {
             ComboPiece ComboPiece = db.ComboPieces.Find(id);
@@ -122,7 +120,6 @@ namespace DeckDJ.Controllers
         /// </example>
         [HttpGet]
         [Route("api/ComboPieceData/GetComboPieces/{id}")]
-        [Authorize]
         public IEnumerable<ComboPieceDto> GetComboPieces(int id)
         {
             List<ComboPiece> ComboPieces = db.ComboPieces.Where(c => c.DeckId == id).ToList();
@@ -152,7 +149,6 @@ namespace DeckDJ.Controllers
         /// </example>
         [HttpGet]
         [Route("api/ComboPieceData/GetCombosInDeck/{id}")]
-        [Authorize]
         public IEnumerable<ComboPieceDto> GetCombosInDeck(int id)
         {
             var ComboPieces = db.ComboPieces.Join(db.Cards, combo => combo.CardId, card => card.Id, (combo, card) => new { combo, card.Name, card.Number }).Where(c => c.combo.DeckId == id).ToList();
@@ -187,7 +183,6 @@ namespace DeckDJ.Controllers
         /// </example>
         [HttpGet]
         [Route("api/ComboPieceData/GetCombosForCard/{id}")]
-        [Authorize]
         public IEnumerable<ComboPieceDto> GetCombosForCard(int id)
         {
             var ComboPieces = db.ComboPieces.Join(db.Decks, combo => combo.DeckId, deck => deck.DeckId, (combo, deck) => new { combo, deck.DeckName, deck.UserId }).Where(c => c.combo.CardId == id).ToList();
@@ -222,30 +217,23 @@ namespace DeckDJ.Controllers
         [HttpGet]
         [ResponseType(typeof(CardDto))]
         [Route("api/ComboPieceData/GetCardsInDeck/{id}")]
-        [Authorize]
-        public IEnumerable<CardDto> GetCardsInDeck(int Deckid)
+        public IEnumerable<ComboPieceDto> GetCardsInDeck(int Deckid)
         {
-            var Cards = db.ComboPieces.Join(db.Cards, combo => combo.CardId, card => card.Id, (combo, card) => new { combo, card}).Where(c => c.combo.DeckId == Deckid).ToList();
-            List<CardDto> CardDtos = new List<CardDto>();
-            foreach (var card in Cards)
+            var ComboPieces = db.ComboPieces.Join(db.Cards, combo => combo.CardId, card => card.Id, (combo, card) => new { combo, card}).Where(c => c.combo.DeckId == Deckid).ToList();
+            List<ComboPieceDto> ComboPieceDtos = new List<ComboPieceDto>();
+            foreach (var comboPiece in ComboPieces)
             {
-                CardDtos.Add(new CardDto()
+                ComboPieceDtos.Add(new ComboPieceDto()
                 {
-                    Id = card.card.Id,
-                    Number = card.card.Id,
-                    Name = card.card.Name,
-                    CardFrame = card.card.CardFrame,
-                    CardType = card.card.CardType,
-                    Level = card.card.Level,
-                    Attribute = card.card.Attribute,
-                    Scale = card.card.Id,
-                    Attack = card.card.Id,
-                    Defense = card.card.Id,
-                    Copies = card.combo.copies,
-                    ComboPieceId = card.combo.ComboPieceId
+                    CardId = comboPiece.card.Id,
+                    CardNumber = comboPiece.card.Number,
+                    CardName = comboPiece.card.Name,
+                    copies = comboPiece.combo.copies,
+                    ComboPieceId = comboPiece.combo.ComboPieceId,
+                    DeckId = comboPiece.combo.DeckId
                 });
             }
-            return CardDtos;
+            return ComboPieceDtos;
         }
 
         /// <summary>
@@ -263,7 +251,6 @@ namespace DeckDJ.Controllers
         /// </example>
         [HttpGet]
         [Route("api/ComboPieceData/GetCardsNotInDeck/{id}")]
-        [Authorize]
         public IEnumerable<CardDto> GetCardsNotInDeck(int Deckid)
         {
             var Cards = db.ComboPieces.Join(db.Cards, combo => combo.CardId, card => card.Id, (combo, card) => new { combo, card }).Where(c => c.combo.DeckId != Deckid).ToList();
@@ -302,7 +289,6 @@ namespace DeckDJ.Controllers
         /// </example>
         [HttpGet]
         [Route("api/ComboPieceData/GetDecksForCard/{id}")]
-        [Authorize]
         public IEnumerable<DeckDto> GetDecksForCard(int Cardid)
         {
             var Decks = db.ComboPieces.Join(db.Decks, combo => combo.CardId, deck => deck.DeckId, (combo, deck) => new { combo, deck}).Where(c => c.combo.CardId == Cardid).ToList();
@@ -338,7 +324,6 @@ namespace DeckDJ.Controllers
         [ResponseType(typeof(ComboPiece))]
         [HttpPost]
         [Route("api/ComboPieceData/UpdateComboPiece/{id}")]
-        [Authorize]
         public IHttpActionResult UpdateComboPiece(int id, [FromBody] ComboPiece ComboPiece)
         {
             if (!ModelState.IsValid)
@@ -388,7 +373,6 @@ namespace DeckDJ.Controllers
         [ResponseType(typeof(ComboPiece))]
         [HttpPost]
         [Route("api/ComboPieceData/DeleteComboPiece/{id}")]
-        [Authorize]
         public IHttpActionResult DeleteComboPiece(int id)
         {
             ComboPiece ComboPiece = db.ComboPieces.Find(id);

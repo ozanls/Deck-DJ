@@ -9,8 +9,7 @@ namespace DeckDJ.Models
     {
         public DeckDto Deck { get; set; }
 
-        public IEnumerable<CardDto> Cards { get; set; }
+        public IEnumerable<ComboPieceDto> ComboPieces { get; set; }
 
-        public IEnumerable<CardDto> AvailableCards { get; set; }
     }
 }
