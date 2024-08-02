@@ -29,6 +29,8 @@ namespace DeckDJ.Models
         public DbSet<Card> Cards { get; set; }
         public DbSet<ComboPiece> ComboPieces { get; set; }
         public DbSet<Deck> Decks { get; set; }
+        public DbSet<Audio> Audios { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
         public static ApplicationDbContext Create()
         {

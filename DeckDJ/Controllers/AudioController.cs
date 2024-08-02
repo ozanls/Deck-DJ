@@ -6,11 +6,11 @@ using System.Net.Http;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
-using AudioApplication.Models;
+using DeckDJ.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace AudioApplication.Controllers
+namespace DeckDJ.Controllers
 {
     public class AudioController : Controller
     {
