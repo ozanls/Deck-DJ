@@ -25,7 +25,6 @@ namespace DeckDJ.Models
         public int DeckId { get; set; }
         public string UserId { get; set; }
         public string DeckName { get; set; }
-        public string AudioName { get; set; }
 
     }
 }

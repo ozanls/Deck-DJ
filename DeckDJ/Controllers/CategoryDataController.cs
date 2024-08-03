@@ -29,6 +29,7 @@ namespace CategoryApplication.Controllers
         /// </example>
         [HttpGet]
         [ResponseType(typeof(CategoryDto))]
+        [Route("api/CategoryData/ListCategories")]
         public IHttpActionResult ListCategories()
         {
             List<Category> Categories = db.Categories.ToList();
@@ -57,6 +58,7 @@ namespace CategoryApplication.Controllers
         /// </example>
         [ResponseType(typeof(CategoryDto))]
         [HttpGet]
+        [Route("api/CategoryData/FindCategory/{id}")]
         public IHttpActionResult FindCategory(int id)
         {
             Category Category = db.Categories.Find(id);
@@ -91,7 +93,8 @@ namespace CategoryApplication.Controllers
         /// </example>
         [ResponseType(typeof(void))]
         [HttpPost]
-        public IHttpActionResult UpdateCategory(int id, Category category)
+        [Route("api/CategoryData/UpdateCategory/{id}")]
+        public IHttpActionResult UpdateCategory(int id, [FromBody] Category category)
         {
             Debug.WriteLine("I have reached the category update method");
             if (!ModelState.IsValid)
@@ -149,6 +152,7 @@ namespace CategoryApplication.Controllers
         /// </example>
         [ResponseType(typeof(Category))]
         [HttpPost]
+        [Route("api/CategoryData/AddCategory")]
         public IHttpActionResult AddCategory(Category category)
         {
             if (!ModelState.IsValid)
@@ -179,6 +183,7 @@ namespace CategoryApplication.Controllers
         /// </example>
         [ResponseType(typeof(Category))]
         [HttpPost]
+        [Route("api/CategoryData/DeleteCategory/{id}")]
         public IHttpActionResult DeleteCategory(int id)
         {
             Category category = db.Categories.Find(id);

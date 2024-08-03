@@ -18,7 +18,7 @@ namespace DeckDJ.Controllers
         static CategoryController()
         {
             client = new HttpClient();
-            client.BaseAddress = new Uri("https://localhost:44318/api/categorydata/");
+            client.BaseAddress = new Uri("https://localhost:44357/api/categorydata/");
         }
 
         // GET: Category/List 
@@ -71,7 +71,7 @@ namespace DeckDJ.Controllers
             }
             else
             {
-                return RedirectToAction("Show");
+                return RedirectToAction("List");
             }
         }
 
@@ -97,7 +97,7 @@ namespace DeckDJ.Controllers
                 Debug.WriteLine(category.CategoryName);
                 // serialize into JSON, send the request to the API
 
-                string url = "updateaudio/" + id;
+                string url = "UpdateCategory/" + id;
 
                 string jsonpayload = jss.Serialize(category);
                 HttpContent content = new StringContent(jsonpayload);

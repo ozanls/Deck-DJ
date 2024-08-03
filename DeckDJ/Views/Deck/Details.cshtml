@@ -47,13 +47,15 @@
                     <option value="@audio.AudioId">@audio.AudioName - @audio.AudioUploaderId</option>
                 }
             </select>
+            <input type="Submit" value="Add audio" />
         </form>
     </div>
     <table class="table">
         <tr>
-            <th scope="col">CardId</th>
-            <th scope="col">CardName</th>
-            <th scope="col">Copies</th>
+            <th scope="col">Audio Id</th>
+            <th scope="col">Audio Name</th>
+            <th scope="col">URL</th>
+            <th scope="col">Length</th>
             <th scope="col"></th>
         </tr>
         @foreach (var audio in Model.Audios)

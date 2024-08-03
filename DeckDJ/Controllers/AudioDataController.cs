@@ -28,6 +28,7 @@ namespace DeckDJ.Controllers
         /// GET: api/audiodata/listaudios
         /// </example>
         [HttpGet]
+        [Route("api/AudioData/ListAudios")]
         public IEnumerable<AudioDto> ListAudios()
         {
             List<Audio> Audios = db.Audios.ToList();
@@ -42,7 +43,8 @@ namespace DeckDJ.Controllers
                 AudioTimestamp = a.AudioTimestamp,
                 AudioStreams = a.AudioStreams,
                 AudioUploaderId = a.AudioUploaderId,
-                CategoryName = a.Category.CategoryName
+                CategoryName = a.Category.CategoryName,
+                CategoryId = a.Category.CategoryId
             }));
             return AudioDtos;
         }
@@ -62,7 +64,7 @@ namespace DeckDJ.Controllers
         /// </example>
         [HttpGet]
         [ResponseType(typeof(AudioDto))]
-
+        [Route("api/AudioData/ListAudioForCategory/{id}")]
         public IHttpActionResult ListAudioForCategory(int id)
         {
             List<Audio> Audios = db.Audios.Where(a=>a.CategoryId==id).ToList();
@@ -77,7 +79,8 @@ namespace DeckDJ.Controllers
                 AudioTimestamp = a.AudioTimestamp,
                 AudioStreams = a.AudioStreams,
                 AudioUploaderId = a.AudioUploaderId,
-                CategoryName = a.Category.CategoryName
+                CategoryName = a.Category.CategoryName,
+                CategoryId = a.Category.CategoryId
             }));
             return Ok(AudioDtos);
         }
@@ -95,7 +98,7 @@ namespace DeckDJ.Controllers
         /// </example>
         [HttpGet]
         [ResponseType(typeof(AudioDto))]
-
+        [Route("api/AudioData/ListAudioForDeck/{id}")]
         public IHttpActionResult ListAudioForDeck(int id)
         {
             List<Audio> Audios = db.Audios.Where(a => a.Decks.Any(d => d.DeckId == id)).ToList();
@@ -110,7 +113,8 @@ namespace DeckDJ.Controllers
                 AudioTimestamp = a.AudioTimestamp,
                 AudioStreams = a.AudioStreams,
                 AudioUploaderId = a.AudioUploaderId,
-                CategoryName = a.Category.CategoryName
+                CategoryName = a.Category.CategoryName,
+                CategoryId = a.Category.CategoryId
             }));
             return Ok(AudioDtos);
         }
@@ -128,10 +132,10 @@ namespace DeckDJ.Controllers
         /// </example>
         [HttpGet]
         [ResponseType(typeof(AudioDto))]
-
+        [Route("api/AudioData/ListAudioNotForDeck/{id}")]
         public IHttpActionResult ListAudioNotForDeck(int id)
         {
-            List<Audio> Audios = db.Audios.Where(a => a.Decks.Any(d => d.DeckId != id)).ToList();
+            List<Audio> Audios = db.Audios.Where(a => !a.Decks.Any(d => d.DeckId == id)).ToList();
             List<AudioDto> AudioDtos = new List<AudioDto>();
 
             Audios.ForEach(a => AudioDtos.Add(new AudioDto()
@@ -143,7 +147,8 @@ namespace DeckDJ.Controllers
                 AudioTimestamp = a.AudioTimestamp,
                 AudioStreams = a.AudioStreams,
                 AudioUploaderId = a.AudioUploaderId,
-                CategoryName = a.Category.CategoryName
+                CategoryName = a.Category.CategoryName,
+                CategoryId = a.Category.CategoryId
             }));
             return Ok(AudioDtos);
         }
@@ -164,6 +169,7 @@ namespace DeckDJ.Controllers
         /// </example>
         [ResponseType(typeof(Audio))]
         [HttpGet]
+        [Route("api/AudioData/FindAudio/{id}")]
         public IHttpActionResult FindAudio(int id)
         {
             Audio Audio = db.Audios.Find(id);
@@ -176,7 +182,8 @@ namespace DeckDJ.Controllers
                 AudioTimestamp = Audio.AudioTimestamp,
                 AudioStreams = Audio.AudioStreams,
                 AudioUploaderId = Audio.AudioUploaderId,
-                CategoryName = Audio.Category.CategoryName
+                CategoryName = Audio.Category.CategoryName,
+                CategoryId = Audio.Category.CategoryId
             };
             if (Audio == null)
             {
@@ -205,7 +212,8 @@ namespace DeckDJ.Controllers
         /// </example>
         [ResponseType(typeof(void))]
         [HttpPost]
-        public IHttpActionResult UpdateAudio(int id, Audio audio)
+        [Route("api/AudioData/UpdateAudio/{id}")]
+        public IHttpActionResult UpdateAudio(int id, [FromBody]  Audio audio)
         {
             Debug.WriteLine("I have reached the audio update method");
             if (!ModelState.IsValid)
@@ -261,6 +269,7 @@ namespace DeckDJ.Controllers
         /// FORM DATA: Audio JSON Object
         /// </example>
         [HttpPost]
+        [Route("api/AudioData/AddAudio")]
         public IHttpActionResult AddAudio(Audio audio)
         {
             if (!ModelState.IsValid)
@@ -277,6 +286,7 @@ namespace DeckDJ.Controllers
         // POST: api/AudioData/DeleteAudio/5
         [ResponseType(typeof(Audio))]
         [HttpPost]
+        [Route("api/AudioData/DeleteAudio/{id}")]
         public IHttpActionResult DeleteAudio(int id)
         {
             Audio audio = db.Audios.Find(id);

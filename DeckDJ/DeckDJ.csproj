@@ -205,6 +205,10 @@
     <Compile Include="Migrations\202408030026415_audio.Designer.cs">
       <DependentUpon>202408030026415_audio.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202408030126139_many-many.cs" />
+    <Compile Include="Migrations\202408030126139_many-many.Designer.cs">
+      <DependentUpon>202408030126139_many-many.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Audio.cs" />
@@ -212,6 +216,7 @@
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\ComboPiece.cs" />
     <Compile Include="Models\Deck.cs" />
+    <Compile Include="Models\DetailsAudio.cs" />
     <Compile Include="Models\DetailsDeck.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -318,6 +323,7 @@
     <Content Include="Views\Category\List.cshtml" />
     <Content Include="Views\Category\New.cshtml" />
     <Content Include="Views\Category\Show.cshtml" />
+    <Content Include="Views\Audio\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -355,6 +361,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202408030026415_audio.resx">
       <DependentUpon>202408030026415_audio.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202408030126139_many-many.resx">
+      <DependentUpon>202408030126139_many-many.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

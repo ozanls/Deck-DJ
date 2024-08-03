@@ -1,0 +1,63 @@
+﻿@model DeckDJ.Models.DetailsAudio
+@{
+    ViewBag.Title = "Show";
+}
+
+<h2>@Model.</h2>
+
+
+<p><b>URL:</b> @Model.Audio.AudioURL</p>
+<p><b>Length:</b> @Model.Audio.AudioLength</p>
+<p><b>Upload Date:</b> @Model.Audio.AudioTimestamp</p>
+<p><b>Uploader:</b> @Model.Audio.AudioUploaderId</p>
+<p><b>Genre:</b> @Model.Audio.CategoryName</p>
+<p><b>Id:</b> @Model.Audio.AudioId</p>
+<p>@Model.Audio.AudioStreams Views</p>
+
+
+<a href="/Audio/edit/@Model.Audio.AudioId">
+    <div class="button edit" style="
+                                                                        padding:4px;
+                                                                        margin:4px;
+                                                                        color:black;
+                                                                        background-color:lightgray;
+                                                                        border:1px solid black;
+                                                                        border-radius:4px;
+                                                                        text-decoration:none;
+                                                                        width:fit-content
+         ">Edit</div>
+</a>
+<a href="/Audio/DeleteConfirm/@Model.Audio.AudioId">
+    <div class="button delete" style="
+                                                                        padding:4px;
+                                                                        margin:4px;
+                                                                        color:white;
+                                                                        background-color:#ca0000;
+                                                                        border:1px solid black;
+                                                                        border-radius:4px;
+                                                                        text-decoration:none;
+                                                                        width:fit-content
+
+         ">Delete</div>
+</a>
+
+<div>
+    <h3>Decks Containing Audio</h3>
+    <table class="table">
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Name</th>
+            <th scope="col">UserId</th>
+            <th scope="col"></th>
+        </tr>
+        @foreach (var deck in Model.Decks)
+        {
+            <tr>
+                <td>@deck.DeckId</td>
+                <td>@deck.DeckId</td>
+                <td>@deck.UserId</td>
+                <td><a href="/Deck/Unassociate/@deck.DeckId?AudioId=@Model.Audio.AudioId">Remove from deck</a></td>
+            </tr>
+        }
+    </table>
+</div>

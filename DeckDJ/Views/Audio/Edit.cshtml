@@ -8,6 +8,8 @@
 
 <div class="form-div">
     <form class="form" action="/audio/update/@Model.AudioId" method="POST">
+        <input type="hidden" name="AudioId" id="AudioId" value="@Model.AudioId" />
+        <input type="hidden" name="CategoryId" id="CategoryId" value="@Model.CategoryId" />
         <div class="form__input">
             <label class="label">Audio Name:</label>
             <input type="text" name="AudioName" value="@Model.AudioName" />

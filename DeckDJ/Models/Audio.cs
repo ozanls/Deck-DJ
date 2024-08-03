@@ -31,7 +31,7 @@ namespace DeckDJ.Models
         public int CategoryId { get; set; }
 
         public virtual Category Category { get; set; }
-        public IEnumerable<Deck> Decks { get; set; }
+        public ICollection<Deck> Decks { get; set; }
     }
 
     // Data Transfer Object (DTO) allows us to package the information for each model
@@ -53,6 +53,8 @@ namespace DeckDJ.Models
         public int AudioStreams { get; set; }
 
         public int AudioUploaderId { get; set; }
+
+        public int CategoryId { get; set; }
 
         public string CategoryName { get; set; }
 

@@ -89,6 +89,95 @@ namespace DeckDJ.Controllers
             return DeckDtoList;
         }
 
+        ///<summary>
+        /// Returns all decks associated with a audio
+        /// </summary>
+        /// <returns>
+        /// HEADER: 200 (OK)
+        /// CONTENT: all decks related to the audio
+        /// </returns>
+        ///<param name="id">The primary key of the specified audio</param>
+        /// <example>
+        /// GET: api/DeckData/ListDecksForAudio/1
+        /// </example>
+        [HttpGet]
+        [ResponseType(typeof(AudioDto))]
+        [Route("api/DeckData/ListDecksForAudio/{id}")]
+        public IHttpActionResult ListDecksForAudio(int id)
+        {
+            List<Deck> Decks = db.Decks.Where(a => a.Audios.Any(d => d.AudioId == id)).ToList();
+            List<DeckDto> DeckDtos = new List<DeckDto>();
+
+            Decks.ForEach(a => DeckDtos.Add(new DeckDto()
+            {
+                DeckId = a.DeckId,
+                DeckName = a.DeckName,
+                UserId = a.UserId
+            }));
+            return Ok(DeckDtos);
+        }
+
+        ///<summary>
+        /// Returns all decks associated with a audio
+        /// </summary>
+        /// <returns>
+        /// HEADER: 200 (OK)
+        /// CONTENT: all decks related to the audio
+        /// </returns>
+        ///<param name="id">The primary key of the specified audio</param>
+        /// <example>
+        /// GET: api/DeckData/ListDecksForAudio/1
+        /// </example>
+        [HttpGet]
+        [ResponseType(typeof(AudioDto))]
+        [Route("api/DeckData/ListDecksNotForAudio/{id}")]
+        public IHttpActionResult ListDecksNotForAudio(int id)
+        {
+            List<Deck> Decks = db.Decks.Where(a => !a.Audios.Any(d => d.AudioId == id)).ToList();
+            List<DeckDto> DeckDtos = new List<DeckDto>();
+
+            Decks.ForEach(a => DeckDtos.Add(new DeckDto()
+            {
+                DeckId = a.DeckId,
+                DeckName = a.DeckName,
+                UserId = a.UserId
+            }));
+            return Ok(DeckDtos);
+        }
+
+        ///<summary>
+        /// Returns all audios not associated with a deck
+        /// </summary>
+        /// <returns>
+        /// HEADER: 200 (OK)
+        /// CONTENT: all audios not related to the deck
+        /// </returns>
+        ///<param name="id">The primary key of the specified deck</param>
+        /// <example>
+        /// GET: api/audiodata/listaudios
+        /// </example>
+        [HttpGet]
+        [ResponseType(typeof(AudioDto))]
+        [Route("api/DeckData/ListAudioNotForDeck/{id}")]
+        public IHttpActionResult ListAudioNotForDeck(int id)
+        {
+            List<Audio> Audios = db.Audios.Where(a => a.Decks.Any(d => d.DeckId != id)).ToList();
+            List<AudioDto> AudioDtos = new List<AudioDto>();
+
+            Audios.ForEach(a => AudioDtos.Add(new AudioDto()
+            {
+                AudioId = a.AudioId,
+                AudioName = a.AudioName,
+                AudioURL = a.AudioURL,
+                AudioLength = a.AudioLength,
+                AudioTimestamp = a.AudioTimestamp,
+                AudioStreams = a.AudioStreams,
+                AudioUploaderId = a.AudioUploaderId,
+                CategoryName = a.Category.CategoryName
+            }));
+            return Ok(AudioDtos);
+        }
+
         /// <summary>
         /// Returns a specific deck in the system.
         /// </summary>
@@ -228,6 +317,40 @@ namespace DeckDJ.Controllers
             }
 
             SelectedDeck.Audios.Add(SelectedAudio);
+            db.SaveChanges();
+
+            return Ok();
+        }
+
+        /// <summary>
+        /// Removes an association between a particular audio and a particular deck
+        /// </summary>
+        /// <param name="deckid">The deck ID primary key</param>
+        /// <param name="audioid">The audio ID primary key</param>
+        /// <returns>
+        /// HEADER: 200 (OK)
+        /// or
+        /// HEADER: 404 (NOT FOUND)
+        /// </returns>
+        /// <example>
+        /// POST api/DeckData/UnassociateDeckwithAudio/9/1
+        /// </example>
+        [HttpPost]
+        [Route("api/DeckData/UnassociateDeckwithAudio/{deckid}/{audioid}")]
+        public IHttpActionResult UnassociateDeckwithAudio(int deckid, int audioid)
+        {
+
+            Deck SelectedDeck = db.Decks.Include(a => a.Audios).Where(a => a.DeckId == deckid).FirstOrDefault();
+            Audio SelectedAudio = db.Audios.Find(audioid);
+
+            if (SelectedDeck == null || SelectedAudio == null)
+            {
+                return NotFound();
+            }
+
+            //todo: verify that the audio actually is keeping track of the deck
+
+            SelectedDeck.Audios.Remove(SelectedAudio);
             db.SaveChanges();
 
             return Ok();

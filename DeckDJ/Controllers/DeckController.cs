@@ -73,7 +73,6 @@ namespace DeckDJ.Controllers
         }
 
         //GET: Deck/Details/1
-        [Authorize]
         public ActionResult Details(int id)
         {
             GetApplicationCookie();
@@ -161,7 +160,20 @@ namespace DeckDJ.Controllers
         {
             //call our api to associate animal with keeper
             string url = "DeckData/AssociateDeckwithAudio/" + id + "/" + AudioId;
-            HttpContent content = new StringContent(AudioId.ToString());
+            HttpContent content = new StringContent("");
+            content.Headers.ContentType.MediaType = "application/json";
+            HttpResponseMessage response = client.PostAsync(url, content).Result;
+
+            return RedirectToAction("Details/" + id);
+        }
+
+        //POST: Deck/Unassociate/{DeckId}/{AudioId}
+        [HttpGet]
+        public ActionResult Unassociate(int id, int AudioId)
+        {
+            //call our api to associate animal with keeper
+            string url = "DeckData/UnassociateDeckwithAudio/" + id + "/" + AudioId;
+            HttpContent content = new StringContent("");
             content.Headers.ContentType.MediaType = "application/json";
             HttpResponseMessage response = client.PostAsync(url, content).Result;
 

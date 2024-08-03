@@ -20,7 +20,7 @@ namespace DeckDJ.Controllers
         static AudioController()
         {
             client = new HttpClient();
-            client.BaseAddress = new Uri("https://localhost:44318/api/audiodata/");
+            client.BaseAddress = new Uri("https://localhost:44357/api/");
         }
 
 
@@ -29,7 +29,7 @@ namespace DeckDJ.Controllers
         {
             // curl api/AudioData/ListAudios
 
-            string url = "listaudios";
+            string url = "audiodata/listaudios";
 
             HttpResponseMessage response = client.GetAsync(url).Result;
 
@@ -38,19 +38,33 @@ namespace DeckDJ.Controllers
             return View(Audios);
         }
 
-        // GET: Audio/Show/{id}
-        public ActionResult Show(int id)
+        //GET: Audio/Details/1
+        [Authorize]
+        public ActionResult Details(int id)
         {
-            // curl api/AudioData/FindAudio/{id}
 
-            string url = "findaudio/"+id;
+            DetailsAudio ViewModel = new DetailsAudio();
 
+            string url = "AudioData/FindAudio/" + id;
             HttpResponseMessage response = client.GetAsync(url).Result;
 
-            AudioDto Audio = response.Content.ReadAsAsync<AudioDto>().Result;
+            AudioDto selectedAudio = response.Content.ReadAsAsync<AudioDto>().Result;
 
-            // Views/Audio/Show.cshtml
-            return View(Audio);
+            ViewModel.Audio = selectedAudio;
+
+            url = "DeckData/ListDecksForAudio/" + id;
+            response = client.GetAsync(url).Result;
+            IEnumerable<DeckDto> audios = response.Content.ReadAsAsync<IEnumerable<DeckDto>>().Result;
+
+            ViewModel.Decks = audios;
+
+            url = "DeckData/ListDecksNotForAudio/" + id;
+            response = client.GetAsync(url).Result;
+            IEnumerable<DeckDto> otherAudios = response.Content.ReadAsAsync<IEnumerable<DeckDto>>().Result;
+
+            ViewModel.OtherDecks = otherAudios;
+
+            return View(ViewModel);
         }
 
         // POST: Audio/Create
@@ -59,7 +73,7 @@ namespace DeckDJ.Controllers
         {
             Debug.WriteLine("the json payload is:");
 
-            string url = "addaudio";
+            string url = "audiodata/addaudio";
             string jsonpaylod = jss.Serialize(audio);
 
             Debug.WriteLine(jsonpaylod);
@@ -73,7 +87,7 @@ namespace DeckDJ.Controllers
             }
             else
             {
-                return RedirectToAction("Show");
+                return RedirectToAction("Error");
             }
         }
         
@@ -81,7 +95,7 @@ namespace DeckDJ.Controllers
         // GET: Audio/Edit/5
         public ActionResult Edit(int id)
         {
-            string url = "findaudio/" + id;
+            string url = "audiodata/findaudio/" + id;
             HttpResponseMessage response = client.GetAsync(url).Result;
 
             AudioDto selectedaudio = response.Content.ReadAsAsync<AudioDto>().Result;
@@ -106,7 +120,7 @@ namespace DeckDJ.Controllers
 
                 // serialize into JSON, send the request to the API
 
-                string url = "updateaudio/" + id;
+                string url = "audiodata/updateaudio/" + id;
 
                 string jsonpayload = jss.Serialize(audio);
                 Debug.WriteLine(jsonpayload);
@@ -115,8 +129,18 @@ namespace DeckDJ.Controllers
 
                 //POST: api/audiodata/updateaudio/{id}
                 content.Headers.ContentType.MediaType = "application/json";
+                HttpResponseMessage response = client.PostAsync(url, content).Result;
+                Debug.WriteLine(content);
 
-                return RedirectToAction("Details/" + id);
+                if (response.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Details/" + id);
+                }
+                else
+                {
+                    return RedirectToAction("Error");
+                }
+                
             }
 
             catch
@@ -128,7 +152,7 @@ namespace DeckDJ.Controllers
         // GET: Audio/New
         public ActionResult New()
         {
-            string url = "https://localhost:44318/api/categorydata/listcategories";
+            string url = "https://localhost:44357/api/categorydata/listcategories";
             HttpResponseMessage response = client.GetAsync(url).Result;
             IEnumerable<CategoryDto> categories = JsonConvert.DeserializeObject<IEnumerable<CategoryDto>>(response.Content.ReadAsStringAsync().Result);
             return View(categories);
@@ -139,7 +163,7 @@ namespace DeckDJ.Controllers
         // GET: Audio/DeleteConfirm/5
         public ActionResult DeleteConfirm(int id)
         {
-            string url = "findaudio/" + id;
+            string url = "audiodata/findaudio/" + id;
             HttpResponseMessage response = client.GetAsync(url).Result;
             AudioDto selectedaudio = response.Content.ReadAsAsync<AudioDto>().Result;
             return View(selectedaudio);
@@ -152,7 +176,7 @@ namespace DeckDJ.Controllers
         {
             try
             {
-                string url = "deleteaudio/" + id;
+                string url = "audiodata/deleteaudio/" + id;
                 HttpContent content = new StringContent("");
                 HttpResponseMessage response = client.PostAsync(url, content).Result;
                 return RedirectToAction("List");
