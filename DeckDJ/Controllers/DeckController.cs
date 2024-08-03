@@ -159,9 +159,24 @@ namespace DeckDJ.Controllers
         [HttpPost]
         public ActionResult Associate(int id, int AudioId)
         {
-            //call our api to associate animal with keeper
+            //call our api to associate deck with audio
             string url = "DeckData/AssociateDeckwithAudio/" + id + "/" + AudioId;
             HttpContent content = new StringContent(AudioId.ToString());
+            content.Headers.ContentType.MediaType = "application/json";
+            HttpResponseMessage response = client.PostAsync(url, content).Result;
+
+            return RedirectToAction("Details/" + id);
+        }
+
+        //GET: Deck/UnAssociate/{DeckId}/{AudioId}
+        [HttpGet]
+        public ActionResult UnAssociate(int id, int AudioId)
+        {
+            Debug.WriteLine("Attempting to unassociate Deck :" + id + " with Audio: " + AudioId);
+
+            //call our api to unassociate deck with audio
+            string url = "deckdata/unassociatedeckwithaudio/" + id + "/" + AudioId;
+            HttpContent content = new StringContent("");
             content.Headers.ContentType.MediaType = "application/json";
             HttpResponseMessage response = client.PostAsync(url, content).Result;
 

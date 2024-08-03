@@ -43,14 +43,30 @@ namespace DeckDJ.Controllers
         {
             // curl api/AudioData/FindAudio/{id}
 
+            DetailsAudio ViewModel = new DetailsAudio();
+
             string url = "findaudio/"+id;
 
             HttpResponseMessage response = client.GetAsync(url).Result;
 
-            AudioDto Audio = response.Content.ReadAsAsync<AudioDto>().Result;
+            AudioDto selectedAudio = response.Content.ReadAsAsync<AudioDto>().Result;
+
+            ViewModel.Audio = selectedAudio;
+
+            url = "DeckData/ListDecksForAudio/" + id;
+            response = client.GetAsync(url).Result;
+            IEnumerable<DeckDto> decks = response.Content.ReadAsAsync<IEnumerable<DeckDto>>().Result;
+
+            ViewModel.Decks = decks;
+
+            url = "DeckData/ListDecksNotForAudio/" + id;
+            response = client.GetAsync(url).Result;
+            IEnumerable<DeckDto> otherDecks = response.Content.ReadAsAsync<IEnumerable<DeckDto>>().Result;
+
+            ViewModel.OtherDecks = otherDecks;
 
             // Views/Audio/Show.cshtml
-            return View(Audio);
+            return View(ViewModel);
         }
 
         // POST: Audio/Create

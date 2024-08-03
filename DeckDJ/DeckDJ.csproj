@@ -212,6 +212,7 @@
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\ComboPiece.cs" />
     <Compile Include="Models\Deck.cs" />
+    <Compile Include="Models\DetailsAudio.cs" />
     <Compile Include="Models\DetailsDeck.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
