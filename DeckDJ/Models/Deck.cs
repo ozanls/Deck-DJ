@@ -15,10 +15,8 @@ namespace DeckDJ.Models
         [ForeignKey("UserId")]
         public virtual ApplicationUser User { get; set; }
         public string DeckName { get; set; }
-        [ForeignKey("Audio")]
-        public int AudioId { get; set; }
-        public virtual Audio Audio { get; set; }
 
+        public ICollection<Audio> Audios { get; set; }
     }
 
     public class DeckDto

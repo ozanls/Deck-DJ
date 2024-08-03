@@ -11,5 +11,9 @@ namespace DeckDJ.Models
 
         public IEnumerable<ComboPieceDto> ComboPieces { get; set; }
 
+        public IEnumerable<AudioDto> Audios { get; set; }
+
+        public IEnumerable<AudioDto> OtherAudios { get; set; }
+
     }
 }

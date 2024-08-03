@@ -89,30 +89,23 @@ namespace DeckDJ.Controllers
 
             url = "ComboPieceData/GetCombosInDeck/" + id;
             response = client.GetAsync(url).Result;
-            Debug.Write(response.Content.ReadAsStringAsync().Result);
             IEnumerable<ComboPieceDto> comboPieces = response.Content.ReadAsAsync<IEnumerable<ComboPieceDto>>().Result;
 
             ViewModel.ComboPieces = comboPieces;
-           
+
+            url = "AudioData/ListAudioForDeck/" + id;
+            response = client.GetAsync(url).Result;
+            IEnumerable<AudioDto> audios = response.Content.ReadAsAsync<IEnumerable<AudioDto>>().Result;
+
+            ViewModel.Audios = audios;
+
+            url = "AudioData/ListAudioNotForDeck/" + id;
+            response = client.GetAsync(url).Result;
+            IEnumerable<AudioDto> otherAudios = response.Content.ReadAsAsync<IEnumerable<AudioDto>>().Result;
+
+            ViewModel.OtherAudios = otherAudios;
 
             return View(ViewModel);
-        }
-
-        //GET: Deck/MyDecks
-        [Authorize]
-        public ActionResult MyDecks()
-        {
-            GetApplicationCookie();
-            string url = "DeckData/UserDecks/" + User.Identity.GetUserId();
-            HttpResponseMessage response = client.GetAsync(url).Result;
-            Debug.WriteLine(response.Content.ReadAsStringAsync().Result);
-            Debug.WriteLine(response.Content.ReadAsStringAsync().Result);
-            Debug.WriteLine(response.Content.ReadAsStringAsync().Result);
-
-
-            IEnumerable<DeckDto> decks = response.Content.ReadAsAsync<IEnumerable<DeckDto>>().Result;
-
-            return View((object)User.Identity.GetUserId());
         }
 
         //GET: Deck/Edit/1
@@ -160,6 +153,19 @@ namespace DeckDJ.Controllers
             {
                 return RedirectToAction("Error");
             }
+        }
+
+        //POST: Deck/Associate/{DeckId}/{AudioId}
+        [HttpPost]
+        public ActionResult Associate(int id, int AudioId)
+        {
+            //call our api to associate animal with keeper
+            string url = "DeckData/AssociateDeckwithAudio/" + id + "/" + AudioId;
+            HttpContent content = new StringContent(AudioId.ToString());
+            content.Headers.ContentType.MediaType = "application/json";
+            HttpResponseMessage response = client.PostAsync(url, content).Result;
+
+            return RedirectToAction("Details/" + id);
         }
 
         // GET: Deck/Delete/1

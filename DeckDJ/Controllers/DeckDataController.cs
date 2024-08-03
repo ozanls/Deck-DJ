@@ -202,6 +202,38 @@ namespace DeckDJ.Controllers
         }
 
         /// <summary>
+        /// Associates a particular audio with a particular deck
+        /// </summary>
+        /// <param name="deckid">The deck ID primary key</param>
+        /// <param name="audioid">The audio ID primary key</param>
+        /// <returns>
+        /// HEADER: 200 (OK)
+        /// or
+        /// HEADER: 404 (NOT FOUND)
+        /// </returns>
+        /// <example>
+        /// POST api/DeckData/AssociateDeckWithAudio/9/1
+        /// </example>
+        [HttpPost]
+        [Route("api/DeckData/AssociateDeckWithAudio/{deckid}/{audioid}")]
+        public IHttpActionResult AssociateDeckWithAudio(int deckid, int audioid)
+        {
+
+            Deck SelectedDeck = db.Decks.Include(a => a.Audios).Where(a => a.DeckID == deckid).FirstOrDefault();
+            Audio SelectedAudio = db.Audios.Find(audioid);
+
+            if (SelectedDeck == null || SelectedAudio == null)
+            {
+                return NotFound();
+            }
+
+            SelectedDeck.Audios.Add(SelectedAudio);
+            db.SaveChanges();
+
+            return Ok();
+        }
+
+        /// <summary>
         /// Deletes a deck from the system by it's ID.
         /// </summary>
         /// <param name="id">The primary key of the deck</param>

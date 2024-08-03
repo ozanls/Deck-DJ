@@ -36,6 +36,39 @@
     </table>
 </div>
 
+<div>
+    <h3>Deck Playlist</h3>
+    <div>
+        <h4>Add audio to Deck</h4>
+        <form method="POST" action="/Deck/Associate/@Model.Deck.DeckId">
+            <select name="AudioId">
+                @foreach (var audio in Model.OtherAudios)
+                {
+                    <option value="@audio.AudioId">@audio.AudioName - @audio.AudioUploaderId</option>
+                }
+            </select>
+        </form>
+    </div>
+    <table class="table">
+        <tr>
+            <th scope="col">CardId</th>
+            <th scope="col">CardName</th>
+            <th scope="col">Copies</th>
+            <th scope="col"></th>
+        </tr>
+        @foreach (var audio in Model.Audios)
+        {
+            <tr>
+                <td>@audio.AudioId</td>
+                <td>@audio.AudioName</td>
+                <td>@audio.AudioURL</td>
+                <td>@audio.AudioLength</td>
+                <td><a href="/Deck/Unassociate/@Model.Deck.DeckId?AudioId=@audio.AudioId">Remove from deck</a></td>
+            </tr>
+        }
+    </table>
+</div>
+
 <script src="~/Scripts/admindeck.js"></script>
 <script>
     window.onload = function () {

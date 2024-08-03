@@ -8,10 +8,10 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
-using AudioApplication.Models;
+using DeckDJ.Models;
 using System.Diagnostics;
 
-namespace AudioApplication.Controllers
+namespace DeckDJ.Controllers
 {
     public class AudioDataController : ApiController
     {
@@ -66,6 +66,72 @@ namespace AudioApplication.Controllers
         public IHttpActionResult ListAudioForCategory(int id)
         {
             List<Audio> Audios = db.Audios.Where(a=>a.CategoryId==id).ToList();
+            List<AudioDto> AudioDtos = new List<AudioDto>();
+
+            Audios.ForEach(a => AudioDtos.Add(new AudioDto()
+            {
+                AudioId = a.AudioId,
+                AudioName = a.AudioName,
+                AudioURL = a.AudioURL,
+                AudioLength = a.AudioLength,
+                AudioTimestamp = a.AudioTimestamp,
+                AudioStreams = a.AudioStreams,
+                AudioUploaderId = a.AudioUploaderId,
+                CategoryName = a.Category.CategoryName
+            }));
+            return Ok(AudioDtos);
+        }
+
+        ///<summary>
+        /// Returns all audios associated with a deck
+        /// </summary>
+        /// <returns>
+        /// HEADER: 200 (OK)
+        /// CONTENT: all audios related to the deck
+        /// </returns>
+        ///<param name="id">The primary key of the specified deck</param>
+        /// <example>
+        /// GET: api/audiodata/listaudios
+        /// </example>
+        [HttpGet]
+        [ResponseType(typeof(AudioDto))]
+
+        public IHttpActionResult ListAudioForDeck(int id)
+        {
+            List<Audio> Audios = db.Audios.Where(a => a.Decks.Any(d => d.DeckId == id)).ToList();
+            List<AudioDto> AudioDtos = new List<AudioDto>();
+
+            Audios.ForEach(a => AudioDtos.Add(new AudioDto()
+            {
+                AudioId = a.AudioId,
+                AudioName = a.AudioName,
+                AudioURL = a.AudioURL,
+                AudioLength = a.AudioLength,
+                AudioTimestamp = a.AudioTimestamp,
+                AudioStreams = a.AudioStreams,
+                AudioUploaderId = a.AudioUploaderId,
+                CategoryName = a.Category.CategoryName
+            }));
+            return Ok(AudioDtos);
+        }
+
+        ///<summary>
+        /// Returns all audios not associated with a deck
+        /// </summary>
+        /// <returns>
+        /// HEADER: 200 (OK)
+        /// CONTENT: all audios not related to the deck
+        /// </returns>
+        ///<param name="id">The primary key of the specified deck</param>
+        /// <example>
+        /// GET: api/audiodata/listaudios
+        /// </example>
+        [HttpGet]
+        [ResponseType(typeof(AudioDto))]
+
+        public IHttpActionResult ListAudioNotForDeck(int id)
+        {
+            List<Audio> Audios = db.Audios.Where(a => a.Decks.Any(d => d.DeckId != id)).ToList();
             List<AudioDto> AudioDtos = new List<AudioDto>();
 
             Audios.ForEach(a => AudioDtos.Add(new AudioDto()

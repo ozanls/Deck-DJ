@@ -301,10 +301,8 @@
     <Content Include="Views\Deck\DeleteConfirm.cshtml" />
     <Content Include="Views\Deck\Details.cshtml" />
     <Content Include="Views\Deck\Edit.cshtml" />
-    <Content Include="Views\Deck\EditDeck.cshtml" />
     <Content Include="Views\Deck\Error.cshtml" />
     <Content Include="Views\Deck\List.cshtml" />
-    <Content Include="Views\Deck\MyDecks.cshtml" />
     <Content Include="Views\Deck\New.cshtml" />
   </ItemGroup>
   <ItemGroup>
