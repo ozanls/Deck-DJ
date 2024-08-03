@@ -1,5 +1,4 @@
-﻿@model DeckDJ.Models.AudioDto
-@{
+﻿@model DeckDJ.Models.DetailsAudio
     ViewBag.Title = "Show";
 }
 
@@ -40,3 +39,22 @@
 
          ">Delete</div>
 </a>
+
+<div>
+    <h3>Decks featured in</h3>
+    <table class="table">
+        <tr>
+            <th scope="col">DeckId</th>
+            <th scope="col">UserId</th>
+            <th scope="col">DeckName</th>
+        </tr>
+        @foreach (var deck in Model.Decks)
+        {
+            <tr>
+                <td>@deck.DeckId</td>
+                <td>@deck.UserId</td>
+                <td>@deck.DeckName</td>
+            </tr>
+        }
+    </table>
+</div>

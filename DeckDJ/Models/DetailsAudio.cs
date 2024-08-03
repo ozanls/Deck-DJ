@@ -12,5 +12,6 @@ namespace DeckDJ.Models
         public IEnumerable<DeckDto> Decks { get; set; }
 
         public IEnumerable<DeckDto> OtherDecks { get; set; }
+
     }
 }

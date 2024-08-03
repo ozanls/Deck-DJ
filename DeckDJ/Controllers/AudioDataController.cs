@@ -60,7 +60,7 @@ namespace DeckDJ.Controllers
         /// </returns>
         ///<param name="id">The primary key of the specified category</param>
         /// <example>
-        /// GET: api/audiodata/listaudios
+        /// GET: api/audiodata/listaudioforcategory/1
         /// </example>
         [HttpGet]
         [ResponseType(typeof(AudioDto))]
@@ -128,7 +128,7 @@ namespace DeckDJ.Controllers
         /// </returns>
         ///<param name="id">The primary key of the specified deck</param>
         /// <example>
-        /// GET: api/audiodata/listaudios
+        /// GET: api/audiodata/listaudionotfordeck/id
         /// </example>
         [HttpGet]
         [ResponseType(typeof(AudioDto))]
