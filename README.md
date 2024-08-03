@@ -11,10 +11,15 @@ specific card types found in Yu-Gi-Oh, once users have created a deck, they will
 random playlist generated based on the cards found in their deck.
 
 Work Distribution:
+
 Kwasi:
+  
   Listing audio associated with specific decks
+  
   Displaying that on the Deck Details page
+  
   Associating audio with decks
+  
   Debugging
 
 Ozan:
