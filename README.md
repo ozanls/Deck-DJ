@@ -10,25 +10,18 @@ Deck DJ is the combination of these two products, by associating different genre
 specific card types found in Yu-Gi-Oh, once users have created a deck, they will also have a
 random playlist generated based on the cards found in their deck.
 
-##Work Distribution:
+## Work Distribution:
 
-###Kwasi:
+### Kwasi:
   
-  Listing audio associated with specific decks
-  
-  Displaying that on the Deck Details page
-  
-  Associating audio with decks
-  
-  Debugging
+  - Listing audio associated with specific decks  
+  - Displaying that on the Deck Details page  
+  - Associating audio with decks  
+  - Final Debugging
 
-###Ozan:
-
-  Combining Databases
-  
-  Listing decks associated with specific audio
-  
-  Displaying that to the Audio Details page
-  
-  Unassociating audio with decks
+### Ozan:  
+  - Intitial Combination of Passion Projects  
+  - Listing decks associated with specific audio  
+  - Displaying that to the Audio Details page  
+  - Unassociating audio with decks
   
