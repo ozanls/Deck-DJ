@@ -3,7 +3,7 @@
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class audiotable : DbMigration
+    public partial class audio : DbMigration
     {
         public override void Up()
         {
@@ -19,10 +19,13 @@
                         AudioStreams = c.Int(nullable: false),
                         AudioUploaderId = c.Int(nullable: false),
                         CategoryId = c.Int(nullable: false),
+                        Deck_DeckId = c.Int(),
                     })
                 .PrimaryKey(t => t.AudioId)
                 .ForeignKey("dbo.Categories", t => t.CategoryId, cascadeDelete: true)
-                .Index(t => t.CategoryId);
+                .ForeignKey("dbo.Decks", t => t.Deck_DeckId)
+                .Index(t => t.CategoryId)
+                .Index(t => t.Deck_DeckId);
             
             CreateTable(
                 "dbo.Categories",
@@ -33,18 +36,14 @@
                     })
                 .PrimaryKey(t => t.CategoryId);
             
-            AddColumn("dbo.Decks", "AudioId", c => c.Int(nullable: false));
-            CreateIndex("dbo.Decks", "AudioId");
-            AddForeignKey("dbo.Decks", "AudioId", "dbo.Audios", "AudioId", cascadeDelete: true);
         }
         
         public override void Down()
         {
-            DropForeignKey("dbo.Decks", "AudioId", "dbo.Audios");
+            DropForeignKey("dbo.Audios", "Deck_DeckId", "dbo.Decks");
             DropForeignKey("dbo.Audios", "CategoryId", "dbo.Categories");
-            DropIndex("dbo.Decks", new[] { "AudioId" });
+            DropIndex("dbo.Audios", new[] { "Deck_DeckId" });
             DropIndex("dbo.Audios", new[] { "CategoryId" });
-            DropColumn("dbo.Decks", "AudioId");
             DropTable("dbo.Categories");
             DropTable("dbo.Audios");
         }

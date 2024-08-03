@@ -219,7 +219,7 @@ namespace DeckDJ.Controllers
         public IHttpActionResult AssociateDeckWithAudio(int deckid, int audioid)
         {
 
-            Deck SelectedDeck = db.Decks.Include(a => a.Audios).Where(a => a.DeckID == deckid).FirstOrDefault();
+            Deck SelectedDeck = db.Decks.Include(d => d.Audios).Where(d => d.DeckId == deckid).FirstOrDefault();
             Audio SelectedAudio = db.Audios.Find(audioid);
 
             if (SelectedDeck == null || SelectedAudio == null)

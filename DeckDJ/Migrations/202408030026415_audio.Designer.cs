@@ -7,13 +7,13 @@ namespace DeckDJ.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.4.4")]
-    public sealed partial class audiotable : IMigrationMetadata
+    public sealed partial class audio : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(audiotable));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(audio));
         
         string IMigrationMetadata.Id
         {
-            get { return "202408022349363_audiotable"; }
+            get { return "202408030026415_audio"; }
         }
         
         string IMigrationMetadata.Source

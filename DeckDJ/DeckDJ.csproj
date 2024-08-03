@@ -182,8 +182,12 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AudioController.cs" />
+    <Compile Include="Controllers\AudioDataController.cs" />
     <Compile Include="Controllers\CardController.cs" />
     <Compile Include="Controllers\CardDataController.cs" />
+    <Compile Include="Controllers\CategoryController.cs" />
+    <Compile Include="Controllers\CategoryDataController.cs" />
     <Compile Include="Controllers\ComboPieceController.cs" />
     <Compile Include="Controllers\ComboPieceDataController.cs" />
     <Compile Include="Controllers\DeckController.cs" />
@@ -197,9 +201,9 @@
     <Compile Include="Migrations\202408022030030_yugioh.Designer.cs">
       <DependentUpon>202408022030030_yugioh.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202408022349363_audiotable.cs" />
-    <Compile Include="Migrations\202408022349363_audiotable.designer.cs">
-      <DependentUpon>202408022349363_audiotable.cs</DependentUpon>
+    <Compile Include="Migrations\202408030026415_audio.cs" />
+    <Compile Include="Migrations\202408030026415_audio.Designer.cs">
+      <DependentUpon>202408030026415_audio.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -304,6 +308,16 @@
     <Content Include="Views\Deck\Error.cshtml" />
     <Content Include="Views\Deck\List.cshtml" />
     <Content Include="Views\Deck\New.cshtml" />
+    <Content Include="Views\Audio\DeleteConfirm.cshtml" />
+    <Content Include="Views\Audio\Edit.cshtml" />
+    <Content Include="Views\Audio\List.cshtml" />
+    <Content Include="Views\Audio\New.cshtml" />
+    <Content Include="Views\Audio\Show.cshtml" />
+    <Content Include="Views\Category\DeleteConfirm.cshtml" />
+    <Content Include="Views\Category\Edit.cshtml" />
+    <Content Include="Views\Category\List.cshtml" />
+    <Content Include="Views\Category\New.cshtml" />
+    <Content Include="Views\Category\Show.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -339,8 +353,8 @@
     <EmbeddedResource Include="Migrations\202408022030030_yugioh.resx">
       <DependentUpon>202408022030030_yugioh.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202408022349363_audiotable.resx">
-      <DependentUpon>202408022349363_audiotable.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202408030026415_audio.resx">
+      <DependentUpon>202408030026415_audio.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
