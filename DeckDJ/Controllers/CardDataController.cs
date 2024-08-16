@@ -51,7 +51,7 @@ namespace DeckDJ.Controllers
         /// <returns>integer representing the number of card records</returns>
         /// <example>GET: api/CardData/GetCardCount</example>
         [HttpGet]
-        public int GetAnimalCount()
+        public int GetCardCount()
         {
             return db.Cards.Count();
         }

@@ -3,17 +3,23 @@
     ViewBag.Title = "List";
 }
 
-<h2 class="page-title">All Audios</h2>
+<h2 class="page-title mb-4">All Audios</h2>
 
-<ul class="list">
-    @foreach (var Audio in Model)
-    {
-        <li>
+<nav>
+    <a class="dellink" href="/Audio/New/">New Audio</a>
+</nav>
 
-            <a href="Show/@Audio.AudioId">
-                @Audio.AudioName
-            </a>
-        </li>
-
-    }
-</ul>
+<div class="container mt-4">
+    <div class="bg-light p-4 rounded shadow-sm">
+        <ul class="list-group">
+            @foreach (var Audio in Model)
+            {
+                <li class="list-group-item bg-light p-3 rounded mb-2 shadow-sm">
+                    <a href="Details/@Audio.AudioId" class="text-decoration-none">
+                        @Audio.AudioName
+                    </a>
+                </li>
+            }
+        </ul>
+    </div>
+</div>

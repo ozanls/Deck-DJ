@@ -2,35 +2,45 @@
 
 @{
     ViewBag.Title = "Edit";
+    var currentTimestamp = DateTime.Now.ToString("yyyy-MM-ddTHH:mm");
 }
 
 <h2 class="object-title">Edit @Model.AudioName</h2>
 
-<div class="form-div">
-    <form class="form" action="/audio/update/@Model.AudioId" method="POST">
-        <input type="hidden" name="AudioId" id="AudioId" value="@Model.AudioId" />
-        <input type="hidden" name="CategoryId" id="CategoryId" value="@Model.CategoryId" />
-        <div class="form__input">
-            <label class="label">Audio Name:</label>
-            <input type="text" name="AudioName" value="@Model.AudioName" />
-        </div>
-        <div class="form__input">
-            <label class="label">Audio URL:</label>
-            <input type="text" name="AudioURL" value="@Model.AudioURL" />
-        </div>
-        <div class="form__input">
-            <label class="label">Audio Length:</label>
-            <input type="number" name="AudioLength" value="@Model.AudioLength" />
-        </div>
-        <div class="form__input">
-            <label class="label">Audio Upload Date:</label>
-            <input type="datetime" name="AudioTimestamp" value="@Model.AudioTimestamp" />
-        </div>
-        <div class="form__input">
-            <label class="label">Audio Uploader Id:</label>
-            <input type="number" name="AudioUploaderId" value="@Model.AudioUploaderId" />
-        </div>
-        <input class="submit" type="submit" value="Save Changes" />
-    </form>
-</div>
+<div class="container mt-4">
+    <div class="form-container bg-light p-4 rounded shadow-sm">
+        <form action="/audio/update/@Model.AudioId" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="AudioId" id="AudioId" value="@Model.AudioId" />
+            <input type="hidden" name="CategoryId" id="CategoryId" value="@Model.CategoryId" />
 
+            <div class="form-group mb-3">
+                <label for="AudioName" class="form-label">Audio Name:</label>
+                <input type="text" class="form-control" id="AudioName" name="AudioName" value="@Model.AudioName" />
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="AudioLength" class="form-label">Audio Length:</label>
+                <input type="number" class="form-control" id="AudioLength" name="AudioLength" value="@Model.AudioLength" />
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="AudioTimestamp" class="form-label">Audio Upload Date:</label>
+                <input type="datetime-local" class="form-control" id="AudioTimestamp" name="AudioTimestamp" value="@currentTimestamp" />
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="AudioUploaderId" class="form-label">Audio Uploader Id:</label>
+                <input type="number" class="form-control" id="AudioUploaderId" name="AudioUploaderId" value="@Model.AudioUploaderId" />
+            </div>
+
+            <div class="form-group mb-4">
+                <label for="AudioData" class="form-label">Audio File:</label>
+                <div class="col-md-6 col-sm-12">
+                    <input type="file" name="AudioData" />
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary submit-btn">Save Changes</button>
+        </form>
+    </div>
+</div>

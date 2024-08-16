@@ -197,7 +197,7 @@ namespace DeckDJ.Controllers
             {
                 return RedirectToAction("Details/" + id);
             }
-            //call our api to associate animal with keeper
+            //call our api to unassociate deck with audio
             url = "DeckData/UnassociateDeckwithAudio/" + id + "/" + AudioId;
             HttpContent content = new StringContent("");
             content.Headers.ContentType.MediaType = "application/json";

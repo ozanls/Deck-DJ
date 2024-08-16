@@ -17,8 +17,6 @@ namespace DeckDJ.Models
 
         public string AudioName { get; set; }
 
-        public string AudioURL { get; set; }
-
         public int AudioLength { get; set; }
 
         public DateTime AudioTimestamp { get; set; }
@@ -26,6 +24,10 @@ namespace DeckDJ.Models
         public int AudioStreams { get; set; }
 
         public int AudioUploaderId { get; set; }
+
+        public bool AudioHasAudio { get; set; }
+
+        public string AudioExtension { get; set; }
 
         [ForeignKey("Category")]
         public int CategoryId { get; set; }
@@ -44,8 +46,6 @@ namespace DeckDJ.Models
 
         public string AudioName { get; set; }
 
-        public string AudioURL { get; set; }
-
         public int AudioLength { get; set; }
 
         public DateTime AudioTimestamp { get; set; }
@@ -53,6 +53,10 @@ namespace DeckDJ.Models
         public int AudioStreams { get; set; }
 
         public int AudioUploaderId { get; set; }
+
+        public bool AudioHasAudio { get; set; }
+
+        public string AudioExtension { get; set; }
 
         public int CategoryId { get; set; }
 

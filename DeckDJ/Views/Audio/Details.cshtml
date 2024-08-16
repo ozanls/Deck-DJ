@@ -1,63 +1,81 @@
 ﻿@model DeckDJ.Models.DetailsAudio
 @{
-    ViewBag.Title = "Show";
+    ViewBag.Title = "Details";
 }
 
-<h2>@Model.</h2>
+<div class="container mt-4">
+    <div class="bg-light p-4 rounded shadow-sm">
+        <h2>@Model.Audio.AudioName</h2>
 
+        <div class="d-flex justify-content-start mt-4 mb-4">
+            <a href="/Audio/edit/@Model.Audio.AudioId" class="btn btn-primary me-2">Edit</a>
+            <a href="/Audio/DeleteConfirm/@Model.Audio.AudioId" class="btn btn-danger">Delete</a>
+        </div>
 
-<p><b>URL:</b> @Model.Audio.AudioURL</p>
-<p><b>Length:</b> @Model.Audio.AudioLength</p>
-<p><b>Upload Date:</b> @Model.Audio.AudioTimestamp</p>
-<p><b>Uploader:</b> @Model.Audio.AudioUploaderId</p>
-<p><b>Genre:</b> @Model.Audio.CategoryName</p>
-<p><b>Id:</b> @Model.Audio.AudioId</p>
-<p>@Model.Audio.AudioStreams Views</p>
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <th scope="row">Length</th>
+                    <td>@Model.Audio.AudioLength</td>
+                </tr>
+                <tr>
+                    <th scope="row">Upload Date</th>
+                    <td>@Model.Audio.AudioTimestamp</td>
+                </tr>
+                <tr>
+                    <th scope="row">Uploader</th>
+                    <td>@Model.Audio.AudioUploaderId</td>
+                </tr>
+                <tr>
+                    <th scope="row">Genre</th>
+                    <td>@Model.Audio.CategoryName</td>
+                </tr>
+                <tr>
+                    <th scope="row">Id</th>
+                    <td>@Model.Audio.AudioId</td>
+                </tr>
 
+                @if (Model.Audio.AudioHasAudio)
+                {
+                    <tr>
+                        <th scope="row">Listen</th>
+                        <td>
+                            <audio controls>
+                                <source src="~/Content/AudioData/@Model.Audio.AudioId.@Model.Audio.AudioExtension" type="audio/@Model.Audio.AudioExtension">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </td>
+                    </tr>
+                }
 
-<a href="/Audio/edit/@Model.Audio.AudioId">
-    <div class="button edit" style="
-                                                                        padding:4px;
-                                                                        margin:4px;
-                                                                        color:black;
-                                                                        background-color:lightgray;
-                                                                        border:1px solid black;
-                                                                        border-radius:4px;
-                                                                        text-decoration:none;
-                                                                        width:fit-content
-         ">Edit</div>
-</a>
-<a href="/Audio/DeleteConfirm/@Model.Audio.AudioId">
-    <div class="button delete" style="
-                                                                        padding:4px;
-                                                                        margin:4px;
-                                                                        color:white;
-                                                                        background-color:#ca0000;
-                                                                        border:1px solid black;
-                                                                        border-radius:4px;
-                                                                        text-decoration:none;
-                                                                        width:fit-content
+                <tr>
+                    <th scope="row">Views</th>
+                    <td>@Model.Audio.AudioStreams</td>
+                </tr>
+            </tbody>
+        </table>
 
-         ">Delete</div>
-</a>
-
-<div>
-    <h3>Decks Containing Audio</h3>
-    <table class="table">
-        <tr>
-            <th scope="col">Id</th>
-            <th scope="col">Name</th>
-            <th scope="col">UserId</th>
-            <th scope="col"></th>
-        </tr>
-        @foreach (var deck in Model.Decks)
-        {
-            <tr>
-                <td>@deck.DeckId</td>
-                <td>@deck.DeckId</td>
-                <td>@deck.UserId</td>
-                <td><a href="/Deck/Unassociate/@deck.DeckId?AudioId=@Model.Audio.AudioId">Remove from deck</a></td>
-            </tr>
-        }
-    </table>
+        <div class="mt-5">
+            <h3>Decks Containing Audio</h3>
+            <table class="table table-bordered">
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">UserId</th>
+                    <th scope="col"></th>
+                </tr>
+                @foreach (var deck in Model.Decks)
+                {
+                    <tr>
+                        <td>@deck.DeckId</td>
+                        <td>@deck.DeckId</td>
+                        <td>@deck.UserId</td>
+                        <td>
+                            <a href="/Deck/Unassociate/@deck.DeckId?AudioId=@Model.Audio.AudioId" class="btn btn-sm btn-outline-danger">Remove from deck</a>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
 </div>

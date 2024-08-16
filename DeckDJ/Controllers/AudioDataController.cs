@@ -10,6 +10,8 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using DeckDJ.Models;
 using System.Diagnostics;
+using System.Web;
+using System.IO;
 
 namespace DeckDJ.Controllers
 {
@@ -38,11 +40,12 @@ namespace DeckDJ.Controllers
             {
                 AudioId = a.AudioId,
                 AudioName = a.AudioName,
-                AudioURL = a.AudioURL,
                 AudioLength = a.AudioLength,
                 AudioTimestamp = a.AudioTimestamp,
                 AudioStreams = a.AudioStreams,
                 AudioUploaderId = a.AudioUploaderId,
+                AudioExtension = a.AudioExtension,
+                AudioHasAudio = a.AudioHasAudio,
                 CategoryName = a.Category.CategoryName,
                 CategoryId = a.Category.CategoryId
             }));
@@ -74,11 +77,12 @@ namespace DeckDJ.Controllers
             {
                 AudioId = a.AudioId,
                 AudioName = a.AudioName,
-                AudioURL = a.AudioURL,
                 AudioLength = a.AudioLength,
                 AudioTimestamp = a.AudioTimestamp,
                 AudioStreams = a.AudioStreams,
                 AudioUploaderId = a.AudioUploaderId,
+                AudioHasAudio = a.AudioHasAudio,
+                AudioExtension = a.AudioExtension,
                 CategoryName = a.Category.CategoryName,
                 CategoryId = a.Category.CategoryId
             }));
@@ -108,11 +112,12 @@ namespace DeckDJ.Controllers
             {
                 AudioId = a.AudioId,
                 AudioName = a.AudioName,
-                AudioURL = a.AudioURL,
                 AudioLength = a.AudioLength,
                 AudioTimestamp = a.AudioTimestamp,
                 AudioStreams = a.AudioStreams,
                 AudioUploaderId = a.AudioUploaderId,
+                AudioHasAudio = a.AudioHasAudio,
+                AudioExtension = a.AudioExtension,
                 CategoryName = a.Category.CategoryName,
                 CategoryId = a.Category.CategoryId
             }));
@@ -142,11 +147,12 @@ namespace DeckDJ.Controllers
             {
                 AudioId = a.AudioId,
                 AudioName = a.AudioName,
-                AudioURL = a.AudioURL,
                 AudioLength = a.AudioLength,
                 AudioTimestamp = a.AudioTimestamp,
                 AudioStreams = a.AudioStreams,
                 AudioUploaderId = a.AudioUploaderId,
+                AudioHasAudio = a.AudioHasAudio,
+                AudioExtension = a.AudioExtension,
                 CategoryName = a.Category.CategoryName,
                 CategoryId = a.Category.CategoryId
             }));
@@ -177,11 +183,12 @@ namespace DeckDJ.Controllers
             {
                 AudioId = Audio.AudioId,
                 AudioName = Audio.AudioName,
-                AudioURL = Audio.AudioURL,
                 AudioLength = Audio.AudioLength,
                 AudioTimestamp = Audio.AudioTimestamp,
                 AudioStreams = Audio.AudioStreams,
                 AudioUploaderId = Audio.AudioUploaderId,
+                AudioHasAudio = Audio.AudioHasAudio, 
+                AudioExtension = Audio.AudioExtension,
                 CategoryName = Audio.Category.CategoryName,
                 CategoryId = Audio.Category.CategoryId
             };
@@ -233,6 +240,8 @@ namespace DeckDJ.Controllers
             }
 
             db.Entry(audio).State = EntityState.Modified;
+            db.Entry(audio).Property(a => a.AudioHasAudio).IsModified = false;
+            db.Entry(audio).Property(a => a.AudioExtension).IsModified = false;
 
             try
             {
@@ -303,6 +312,76 @@ namespace DeckDJ.Controllers
 
             return Ok();
         }
+
+        // Upload Audio Data
+        [HttpPost]
+        [Route("api/AudioData/UploadAudioData/{id}")]
+
+        public IHttpActionResult UploadAudioData(int id)
+        {
+
+            bool hasAudio = false;
+            string AudioExtension = "";
+            if (Request.Content.IsMimeMultipartContent())
+            {
+                Debug.WriteLine("Received multipart form data.");
+
+                int numFiles = HttpContext.Current.Request.Files.Count;
+                Debug.WriteLine("Files Received: " + numFiles);
+
+                //Check if a file is posted
+                if (numFiles == 1 && HttpContext.Current.Request.Files[0] != null)
+                {
+                    var audioData = HttpContext.Current.Request.Files[0];
+                    //Check if the file is empty
+                    if (audioData.ContentLength > 0)
+                    {
+                        // Establish valid file types
+                        var valTypes = new[] { "mp3", "wav", "ogg" };
+                        var extension = Path.GetExtension(audioData.FileName).Substring(1);
+
+                        //Check the extension of the file
+                        if (valTypes.Contains(extension))
+                        {
+                            try
+                            {
+                                // file name is the audio id
+                                string fn = id + "." + extension;
+
+                                // get a direct file path to ~/Content/AudioData/{id}.{extension}
+                                string path = Path.Combine(HttpContext.Current.Server.MapPath("~/Content/AudioData/"), fn);
+
+                                // Save the file
+                                audioData.SaveAs(path);
+
+                                // If the file is saved successfully, set the audio extension and hasAudio to true
+                                hasAudio = true;
+                                AudioExtension = extension;
+
+                                // Update the audio record in the database
+                                Audio SelectedAudio = db.Audios.Find(id);
+                                SelectedAudio.AudioHasAudio = hasAudio;
+                                SelectedAudio.AudioExtension = AudioExtension;
+                                db.Entry(SelectedAudio).State = EntityState.Modified;
+
+                                db.SaveChanges();
+                            }
+                            catch (Exception ex)
+                            {
+                                Debug.WriteLine("Audio Data was not saved successfully.");
+                                Debug.WriteLine("Error: " + ex);
+                            }
+                        }
+                    }
+                }
+                return Ok();
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
 
         protected override void Dispose(bool disposing)
         {

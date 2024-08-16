@@ -65,7 +65,6 @@ namespace DeckDJ.Controllers
 
             return View(ViewModel);
         }
-
         // POST: Audio/Create
         [HttpPost]
         [Authorize]
@@ -78,11 +77,12 @@ namespace DeckDJ.Controllers
 
             Debug.WriteLine(jsonpaylod);
 
-            HttpContent content =new StringContent(jsonpaylod);
+            HttpContent content = new StringContent(jsonpaylod);
             content.Headers.ContentType.MediaType = "application/json";
 
-            HttpResponseMessage response = client.PostAsync(url,content).Result;
-            if (response.IsSuccessStatusCode) {
+            HttpResponseMessage response = client.PostAsync(url, content).Result;
+            if (response.IsSuccessStatusCode)
+            {
                 return RedirectToAction("List");
             }
             else
@@ -107,17 +107,18 @@ namespace DeckDJ.Controllers
         // POST: Audio/Update/5
         [HttpPost]
         [Authorize]
-        public ActionResult Update(int id, Audio audio)
+        public ActionResult Update(int id, Audio audio, HttpPostedFileBase AudioData)
         {
             try
             {
                 Debug.WriteLine("The new audio info is:");
                 Debug.WriteLine(audio.AudioName);
-                Debug.WriteLine(audio.AudioURL);
                 Debug.WriteLine(audio.AudioLength);
                 Debug.WriteLine(audio.AudioTimestamp);
                 Debug.WriteLine(audio.AudioStreams);
                 Debug.WriteLine(audio.AudioUploaderId);
+                Debug.WriteLine(audio.AudioHasAudio);
+                Debug.WriteLine(audio.AudioExtension);
                 Debug.WriteLine(audio.CategoryId);
 
                 // serialize into JSON, send the request to the API
@@ -133,16 +134,31 @@ namespace DeckDJ.Controllers
                 content.Headers.ContentType.MediaType = "application/json";
                 HttpResponseMessage response = client.PostAsync(url, content).Result;
                 Debug.WriteLine(content);
-
                 if (response.IsSuccessStatusCode)
                 {
+                    if (AudioData != null)
+                    {
+                        Debug.WriteLine("Calling Update Audio method.");
+                        url = "AudioData/UploadAudioData/" + id;
+
+                        MultipartFormDataContent requestcontent = new MultipartFormDataContent();
+                        HttpContent audioContent = new StreamContent(AudioData.InputStream);
+                        requestcontent.Add(audioContent, "AudioData", AudioData.FileName);
+                        response = client.PostAsync(url, requestcontent).Result;
+                    }
+                    else
+                    {
+                        Debug.WriteLine("No audio file uploaded.");
+                        Debug.WriteLine("Audio:" + AudioData);
+                    }
+
                     return RedirectToAction("Details/" + id);
                 }
                 else
                 {
                     return RedirectToAction("Error");
                 }
-                
+
             }
 
             catch

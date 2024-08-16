@@ -168,11 +168,12 @@ namespace DeckDJ.Controllers
             {
                 AudioId = a.AudioId,
                 AudioName = a.AudioName,
-                AudioURL = a.AudioURL,
                 AudioLength = a.AudioLength,
                 AudioTimestamp = a.AudioTimestamp,
                 AudioStreams = a.AudioStreams,
                 AudioUploaderId = a.AudioUploaderId,
+                AudioHasAudio = a.AudioHasAudio,
+                AudioExtension = a.AudioExtension,
                 CategoryName = a.Category.CategoryName
             }));
             return Ok(AudioDtos);

@@ -209,6 +209,10 @@
     <Compile Include="Migrations\202408030126139_many-many.Designer.cs">
       <DependentUpon>202408030126139_many-many.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202408162108594_AudioExtension.cs" />
+    <Compile Include="Migrations\202408162108594_AudioExtension.designer.cs">
+      <DependentUpon>202408162108594_AudioExtension.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Audio.cs" />
@@ -328,6 +332,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\AudioData\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />
@@ -365,6 +370,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202408030126139_many-many.resx">
       <DependentUpon>202408030126139_many-many.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202408162108594_AudioExtension.resx">
+      <DependentUpon>202408162108594_AudioExtension.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

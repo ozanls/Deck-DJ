@@ -137,7 +137,7 @@ namespace DeckDJ.Controllers
             return View(selectedCard);
         }
 
-        // POST: Animal/Update/5
+        // POST: Card/Update/5
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public ActionResult Update(int id, Card card)

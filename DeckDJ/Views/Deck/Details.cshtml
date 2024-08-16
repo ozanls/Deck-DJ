@@ -54,7 +54,6 @@
         <tr>
             <th scope="col">Audio Id</th>
             <th scope="col">Audio Name</th>
-            <th scope="col">URL</th>
             <th scope="col">Length</th>
             <th scope="col"></th>
         </tr>
@@ -63,7 +62,6 @@
             <tr>
                 <td>@audio.AudioId</td>
                 <td>@audio.AudioName</td>
-                <td>@audio.AudioURL</td>
                 <td>@audio.AudioLength</td>
                 <td><a href="/Deck/Unassociate/@Model.Deck.DeckId?AudioId=@audio.AudioId">Remove from deck</a></td>
             </tr>
