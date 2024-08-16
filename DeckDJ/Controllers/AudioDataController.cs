@@ -213,6 +213,7 @@ namespace DeckDJ.Controllers
         [ResponseType(typeof(void))]
         [HttpPost]
         [Route("api/AudioData/UpdateAudio/{id}")]
+        [Authorize]
         public IHttpActionResult UpdateAudio(int id, [FromBody]  Audio audio)
         {
             Debug.WriteLine("I have reached the audio update method");
@@ -270,6 +271,7 @@ namespace DeckDJ.Controllers
         /// </example>
         [HttpPost]
         [Route("api/AudioData/AddAudio")]
+        [Authorize]
         public IHttpActionResult AddAudio(Audio audio)
         {
             if (!ModelState.IsValid)
@@ -287,6 +289,7 @@ namespace DeckDJ.Controllers
         [ResponseType(typeof(Audio))]
         [HttpPost]
         [Route("api/AudioData/DeleteAudio/{id}")]
+        [Authorize]
         public IHttpActionResult DeleteAudio(int id)
         {
             Audio audio = db.Audios.Find(id);

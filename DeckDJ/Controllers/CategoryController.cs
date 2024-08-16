@@ -52,6 +52,7 @@ namespace DeckDJ.Controllers
 
         // POST: Category/Create
         [HttpPost]
+        [Authorize(Roles ="Admin")]
         public ActionResult Create(Category category)
         {
             Debug.WriteLine("the json payload is:");
@@ -76,6 +77,7 @@ namespace DeckDJ.Controllers
         }
 
         // GET: Category/Edit/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit(int id)
         {
             string url = "findcategory/" + id;
@@ -88,6 +90,7 @@ namespace DeckDJ.Controllers
 
         // POST: Category/Update/5
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public ActionResult Update(int id, Category category)
         {
             try
@@ -121,6 +124,7 @@ namespace DeckDJ.Controllers
         }
 
         // GET: Category/New
+        [Authorize(Roles = "Admin")]
         public ActionResult New()
         {
 
@@ -128,6 +132,7 @@ namespace DeckDJ.Controllers
         }
 
         // GET: Category/DeleteConfirm/5
+        [Authorize(Roles = "Admin")]
         public ActionResult DeleteConfirm(int id)
         {
             string url = "findcategory/" + id;
@@ -138,6 +143,7 @@ namespace DeckDJ.Controllers
 
         // POST: Category/Delete/5
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(int id)
         {
             try

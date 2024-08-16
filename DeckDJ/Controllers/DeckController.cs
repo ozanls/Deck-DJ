@@ -59,7 +59,6 @@ namespace DeckDJ.Controllers
         }
 
         // GET: Deck/List
-        [Authorize]
         public ActionResult List()
         {
             GetApplicationCookie();
@@ -117,18 +116,10 @@ namespace DeckDJ.Controllers
 
             DeckDto selectedDeck = response.Content.ReadAsAsync<DeckDto>().Result;
 
-            return View(selectedDeck);
-        }
-
-        //GET: Deck/EditDeck/1
-        [Authorize]
-        public ActionResult EditDeck(int id)
-        {
-            GetApplicationCookie();
-            string url = "DeckData/FindDeck/" + id;
-            HttpResponseMessage response = client.GetAsync(url).Result;
-
-            DeckDto selectedDeck = response.Content.ReadAsAsync<DeckDto>().Result;
+            if (selectedDeck.UserId != User.Identity.GetUserId())
+            {
+                return RedirectToAction("Details/" + id);
+            }
 
             return View(selectedDeck);
         }
@@ -139,11 +130,22 @@ namespace DeckDJ.Controllers
         public ActionResult Update(int id, Deck deck)
         {
             GetApplicationCookie();
-            string url = "DeckData/UpdateDeck/" + id;
+
+            string url = "DeckData/FindDeck/" + id;
+            HttpResponseMessage response = client.GetAsync(url).Result;
+
+            DeckDto selectedDeck = response.Content.ReadAsAsync<DeckDto>().Result;
+
+            if (selectedDeck.UserId != User.Identity.GetUserId())
+            {
+                return RedirectToAction("Details/" + id);
+            }
+
+            url = "DeckData/UpdateDeck/" + id;
             string jsonpayload = jss.Serialize(deck);
             HttpContent content = new StringContent(jsonpayload);
             content.Headers.ContentType.MediaType = "application/json";
-            HttpResponseMessage response = client.PostAsync(url, content).Result;
+            response = client.PostAsync(url, content).Result;
             if (response.IsSuccessStatusCode)
             {
                 return RedirectToAction("Details/" + id);
@@ -156,41 +158,50 @@ namespace DeckDJ.Controllers
 
         //POST: Deck/Associate/{DeckId}/{AudioId}
         [HttpPost]
+        [Authorize]
         public ActionResult Associate(int id, int AudioId)
         {
+            GetApplicationCookie();
+
+            string url = "DeckData/FindDeck/" + id;
+            HttpResponseMessage response = client.GetAsync(url).Result;
+
+            DeckDto selectedDeck = response.Content.ReadAsAsync<DeckDto>().Result;
+
+            if (selectedDeck.UserId != User.Identity.GetUserId())
+            {
+                return RedirectToAction("Details/" + id);
+            }
             //call our api to associate deck with audio
-            string url = "DeckData/AssociateDeckwithAudio/" + id + "/" + AudioId;
+            url = "DeckData/AssociateDeckwithAudio/" + id + "/" + AudioId;
             HttpContent content = new StringContent("");
             content.Headers.ContentType.MediaType = "application/json";
-            HttpResponseMessage response = client.PostAsync(url, content).Result;
+            response = client.PostAsync(url, content).Result;
 
             return RedirectToAction("Details/" + id);
         }
 
         //POST: Deck/Unassociate/{DeckId}/{AudioId}
         [HttpGet]
+        [Authorize]
         public ActionResult Unassociate(int id, int AudioId)
         {
+            GetApplicationCookie();
+
+            string url = "DeckData/FindDeck/" + id;
+            HttpResponseMessage response = client.GetAsync(url).Result;
+
+            DeckDto selectedDeck = response.Content.ReadAsAsync<DeckDto>().Result;
+
+            if (selectedDeck.UserId != User.Identity.GetUserId())
+            {
+                return RedirectToAction("Details/" + id);
+            }
             //call our api to associate animal with keeper
-            string url = "DeckData/UnassociateDeckwithAudio/" + id + "/" + AudioId;
+            url = "DeckData/UnassociateDeckwithAudio/" + id + "/" + AudioId;
             HttpContent content = new StringContent("");
             content.Headers.ContentType.MediaType = "application/json";
-            HttpResponseMessage response = client.PostAsync(url, content).Result;
-
-            return RedirectToAction("Details/" + id);
-        }
-
-        //GET: Deck/UnAssociate/{DeckId}/{AudioId}
-        [HttpGet]
-        public ActionResult UnAssociate(int id, int AudioId)
-        {
-            Debug.WriteLine("Attempting to unassociate Deck :" + id + " with Audio: " + AudioId);
-
-            //call our api to unassociate deck with audio
-            string url = "deckdata/unassociatedeckwithaudio/" + id + "/" + AudioId;
-            HttpContent content = new StringContent("");
-            content.Headers.ContentType.MediaType = "application/json";
-            HttpResponseMessage response = client.PostAsync(url, content).Result;
+            response = client.PostAsync(url, content).Result;
 
             return RedirectToAction("Details/" + id);
         }
@@ -203,6 +214,10 @@ namespace DeckDJ.Controllers
             string url = "DeckData/FindDeck/" + id;
             HttpResponseMessage response = client.GetAsync(url).Result;
             DeckDto selectedDeck = response.Content.ReadAsAsync<DeckDto>().Result;
+            if (selectedDeck.UserId != User.Identity.GetUserId())
+            {
+                return RedirectToAction("Details/" + id);
+            }
             return View(selectedDeck);
 
         }
@@ -213,10 +228,20 @@ namespace DeckDJ.Controllers
         public ActionResult Delete(int id)
         {
             GetApplicationCookie();
-            string url = "DeckData/DeleteDeck/" + id;
+
+            string url = "DeckData/FindDeck/" + id;
+            HttpResponseMessage response = client.GetAsync(url).Result;
+
+            DeckDto selectedDeck = response.Content.ReadAsAsync<DeckDto>().Result;
+
+            if (selectedDeck.UserId != User.Identity.GetUserId())
+            {
+                return RedirectToAction("Details/" + id);
+            }
+            url = "DeckData/DeleteDeck/" + id;
             HttpContent content = new StringContent("");
             content.Headers.ContentType.MediaType = "application/json";
-            HttpResponseMessage response = client.PostAsync(url, content).Result;
+            response = client.PostAsync(url, content).Result;
 
             if (response.IsSuccessStatusCode)
             {

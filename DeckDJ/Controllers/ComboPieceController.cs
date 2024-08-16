@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using DeckDJ.Models;
+using Microsoft.AspNet.Identity;
 
 namespace DeckDJ.Controllers
 {
@@ -19,7 +20,25 @@ namespace DeckDJ.Controllers
         static ComboPieceController()
         {
             client = new HttpClient();
-            client.BaseAddress = new Uri("https://localhost:44357/api/ComboPieceData/");
+            client.BaseAddress = new Uri("https://localhost:44357/api/");
+        }
+
+        private bool isOwner(int id)
+        {
+            string url = "ComboPieceData/FindComboPiece/" + id;
+            HttpResponseMessage response = client.GetAsync(url).Result;
+            ComboPieceDto selectedComboPiece = response.Content.ReadAsAsync<ComboPieceDto>().Result;
+            
+            url = "DeckData/FindDeck/" + selectedComboPiece.DeckId;
+            response = client.GetAsync(url).Result;
+
+            DeckDto selectedDeck = response.Content.ReadAsAsync<DeckDto>().Result;
+
+            if (selectedDeck.UserId != User.Identity.GetUserId())
+            {
+                return false;
+            }
+            return true;
         }
 
         // GET: ComboPiece/New
@@ -32,15 +51,30 @@ namespace DeckDJ.Controllers
 
         // POST: ComboPiece/Create
         [HttpPost]
+        [Authorize]
         public ActionResult Create(ComboPiece comboPiece)
         {
-            string url = "AddComboPiece";
+            string url = "DeckData/FindDeck/" + comboPiece.DeckId;
+            HttpResponseMessage response = client.GetAsync(url).Result;
+
+            DeckDto selectedDeck = response.Content.ReadAsAsync<DeckDto>().Result;
+
+            if (selectedDeck.UserId != User.Identity.GetUserId())
+            {
+                return RedirectToAction("List"); ;
+            }
+
+            url = "ComboPieceData/AddComboPiece";
+            if (!isOwner(comboPiece.DeckId))
+            {
+                return RedirectToAction("List");
+            }
 
             string jsonpayload = jss.Serialize(comboPiece);
             HttpContent content = new StringContent(jsonpayload);
             content.Headers.ContentType.MediaType = "application/json";
 
-            HttpResponseMessage response = client.PostAsync(url, content).Result;
+            response = client.PostAsync(url, content).Result;
 
             if (response.IsSuccessStatusCode)
             {
@@ -53,11 +87,10 @@ namespace DeckDJ.Controllers
         }
 
         // GET: ComboPiece/List
-        [Authorize]
         public ActionResult List()
         {
             GetApplicationCookie();
-            string url = "ListComboPiece";
+            string url = "ComboPieceData/ListComboPiece";
             HttpResponseMessage response = client.GetAsync(url).Result;
             Debug.WriteLine(response.Content.ReadAsStringAsync().Result.ToString());
 
@@ -69,8 +102,7 @@ namespace DeckDJ.Controllers
         // GET: ComboPiece/Details/1
         public ActionResult Details(int id)
         {
-            GetApplicationCookie();
-            string url = "FindComboPiece/" + id;
+            string url = "ComboPieceData/FindComboPiece/" + id;
             HttpResponseMessage response = client.GetAsync(url).Result;
 
             ComboPieceDto selectedComboPiece = response.Content.ReadAsAsync<ComboPieceDto>().Result;
@@ -83,9 +115,14 @@ namespace DeckDJ.Controllers
         public ActionResult Edit(int id)
         {
             GetApplicationCookie();
-            string url = "FindComboPiece/" + id;
+            string url = "ComboPieceData/FindComboPiece/" + id;
             HttpResponseMessage response = client.GetAsync(url).Result;
             ComboPieceDto selectedComboPiece = response.Content.ReadAsAsync<ComboPieceDto>().Result;
+            if (!isOwner(id))
+            {
+                return RedirectToAction("Details/"+id);
+            }
+
             return View(selectedComboPiece);
         }
 
@@ -95,7 +132,11 @@ namespace DeckDJ.Controllers
         public ActionResult Update(int id, ComboPiece comboPiece)
         {
             GetApplicationCookie();
-            string url = "UpdateComboPiece/" + id;
+            if (!isOwner(id))
+            {
+                return RedirectToAction("Details/" + id);
+            }
+            string url = "ComboPieceData/UpdateComboPiece/" + id;
             string jsonpayload = jss.Serialize(comboPiece);
             HttpContent content = new StringContent(jsonpayload);
             content.Headers.ContentType.MediaType = "application/json";
@@ -115,7 +156,11 @@ namespace DeckDJ.Controllers
         public ActionResult DeleteConfirm(int id)
         {
             GetApplicationCookie();
-            string url = "FindComboPiece/" + id;
+            if (!isOwner(id))
+            {
+                return RedirectToAction("Details/" + id);
+            }
+            string url = "ComboPieceData/FindComboPiece/" + id;
             HttpResponseMessage response = client.GetAsync(url).Result;
             ComboPieceDto selectedComboPiece = response.Content.ReadAsAsync<ComboPieceDto>().Result;
             return View(selectedComboPiece);
@@ -128,7 +173,11 @@ namespace DeckDJ.Controllers
         public ActionResult Delete(int id)
         {
             GetApplicationCookie();
-            string url = "DeleteComboPiece/" + id;
+            if (!isOwner(id))
+            {
+                return RedirectToAction("Details/" + id);
+            }
+            string url = "ComboPieceData/DeleteComboPiece/" + id;
             HttpContent content = new StringContent("");
             content.Headers.ContentType.MediaType = "application/json";
             HttpResponseMessage response = client.PostAsync(url, content).Result;

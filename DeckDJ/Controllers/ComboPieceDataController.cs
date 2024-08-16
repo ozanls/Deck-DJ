@@ -34,6 +34,7 @@ namespace DeckDJ.Controllers
         [ResponseType(typeof(ComboPiece))]
         [HttpPost]
         [Route("api/ComboPieceData/AddComboPiece")]
+        [Authorize]
         public IHttpActionResult AddComboPiece(ComboPiece NewComboPiece)
         {
             if (!ModelState.IsValid)
@@ -324,6 +325,7 @@ namespace DeckDJ.Controllers
         [ResponseType(typeof(ComboPiece))]
         [HttpPost]
         [Route("api/ComboPieceData/UpdateComboPiece/{id}")]
+        [Authorize]
         public IHttpActionResult UpdateComboPiece(int id, [FromBody] ComboPiece ComboPiece)
         {
             if (!ModelState.IsValid)
@@ -373,6 +375,7 @@ namespace DeckDJ.Controllers
         [ResponseType(typeof(ComboPiece))]
         [HttpPost]
         [Route("api/ComboPieceData/DeleteComboPiece/{id}")]
+        [Authorize]
         public IHttpActionResult DeleteComboPiece(int id)
         {
             ComboPiece ComboPiece = db.ComboPieces.Find(id);

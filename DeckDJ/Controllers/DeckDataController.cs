@@ -212,64 +212,6 @@ namespace DeckDJ.Controllers
         }
 
 
-        ///<summary>
-        /// Returns all audios associated with a deck
-        /// </summary>
-        /// <returns>
-        /// HEADER: 200 (OK)
-        /// CONTENT: all audios related to the deck
-        /// </returns>
-        ///<param name="id">The primary key of the specified deck</param>
-        /// <example>
-        /// GET: api/deckdata/listdecksforaudio/id
-        /// </example>
-
-       
-        [HttpGet]
-        [ResponseType(typeof(AudioDto))]
-        public IHttpActionResult ListDecksForAudio(int id)
-        {
-            List<Deck> Decks = db.Decks.Where(a => a.Audios.Any(d => d.AudioId == id)).ToList();
-            List<DeckDto> DeckDtos = new List<DeckDto>();
-
-            Decks.ForEach(d => DeckDtos.Add(new DeckDto()
-            {
-                DeckId = d.DeckId,
-                UserId = d.UserId,
-                DeckName = d.DeckName,
-            }));
-            return Ok(DeckDtos);
-        }
-
-        ///<summary>
-        /// Returns all decks not associated with an audio
-        /// </summary>
-        /// <returns>
-        /// HEADER: 200 (OK)
-        /// CONTENT: all decks not related to the audio
-        /// </returns>
-        ///<param name="id">The primary key of the specified deck</param>
-        /// <example>
-        /// GET: api/deckdata/listdecksnotforaudio/id
-        /// </example>
-        [HttpGet]
-        [ResponseType(typeof(DeckDto))]
-
-        public IHttpActionResult ListDecksNotForAudio(int id)
-        {
-            List<Deck> Decks = db.Decks.Where(a => a.Audios.Any(d => d.AudioId != id)).ToList();
-            List<DeckDto> DeckDtos = new List<DeckDto>();
-
-            Decks.ForEach(d => DeckDtos.Add(new DeckDto()
-            {
-                DeckId = d.DeckId,
-                UserId = d.UserId,
-                DeckName = d.DeckName,
-            }));
-            return Ok(DeckDtos);
-        }
-
-
         /// <summary>
         /// Returns all deck in the system that belong to a specific user.
         /// </summary>

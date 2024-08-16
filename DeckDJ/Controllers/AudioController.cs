@@ -39,7 +39,6 @@ namespace DeckDJ.Controllers
         }
 
         //GET: Audio/Details/1
-        [Authorize]
         public ActionResult Details(int id)
         {
 
@@ -69,6 +68,7 @@ namespace DeckDJ.Controllers
 
         // POST: Audio/Create
         [HttpPost]
+        [Authorize]
         public ActionResult Create(Audio audio)
         {
             Debug.WriteLine("the json payload is:");
@@ -90,9 +90,10 @@ namespace DeckDJ.Controllers
                 return RedirectToAction("Error");
             }
         }
-        
+
 
         // GET: Audio/Edit/5
+        [Authorize]
         public ActionResult Edit(int id)
         {
             string url = "audiodata/findaudio/" + id;
@@ -105,6 +106,7 @@ namespace DeckDJ.Controllers
 
         // POST: Audio/Update/5
         [HttpPost]
+        [Authorize]
         public ActionResult Update(int id, Audio audio)
         {
             try
@@ -150,6 +152,7 @@ namespace DeckDJ.Controllers
         }
 
         // GET: Audio/New
+        [Authorize]
         public ActionResult New()
         {
             string url = "https://localhost:44357/api/categorydata/listcategories";
@@ -161,6 +164,7 @@ namespace DeckDJ.Controllers
 
 
         // GET: Audio/DeleteConfirm/5
+        [Authorize]
         public ActionResult DeleteConfirm(int id)
         {
             string url = "audiodata/findaudio/" + id;
@@ -172,6 +176,7 @@ namespace DeckDJ.Controllers
 
         // POST: Audio/Delete/5
         [HttpPost]
+        [Authorize]
         public ActionResult Delete(int id)
         {
             try

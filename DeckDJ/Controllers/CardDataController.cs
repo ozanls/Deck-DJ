@@ -33,6 +33,7 @@ namespace DeckDJ.Controllers
         [ResponseType(typeof(Card))]
         [HttpPost]
         [Route("api/CardData/AddCard/")]
+        [Authorize(Roles = "Admin")]
         public IHttpActionResult AddCard(Card NewCard)
         {
             if(!ModelState.IsValid)
@@ -170,6 +171,7 @@ namespace DeckDJ.Controllers
         [ResponseType(typeof(Card))]
         [HttpPost]
         [Route("api/CardData/UpdateCard/{id}")]
+        [Authorize(Roles = "Admin")]
         public IHttpActionResult UpdateCard(int id, [FromBody] Card card)
         {
             if (!ModelState.IsValid)
@@ -219,6 +221,7 @@ namespace DeckDJ.Controllers
         [ResponseType(typeof(Card))]
         [HttpPost]
         [Route("api/CardData/DeleteCard/{id}")]
+        [Authorize(Roles = "Admin")]
         public IHttpActionResult DeleteCard(int id)
         {
             Card card = db.Cards.Find(id);
