@@ -62,13 +62,19 @@ namespace DeckDJ.Controllers
         public ActionResult List()
         {
             GetApplicationCookie();
+
+            AdminDecks ViewModel = new AdminDecks();
+
+            if (User.Identity.IsAuthenticated && User.IsInRole("Admin")) ViewModel.IsAdmin = true;
+            else ViewModel.IsAdmin = false;
+
             string url = "DeckData/ListDecks";
             HttpResponseMessage response = client.GetAsync(url).Result;
             Debug.WriteLine(response.Content.ReadAsStringAsync().Result.ToString());
 
-            IEnumerable<DeckDto> decks = response.Content.ReadAsAsync<IEnumerable<DeckDto>>().Result;
+            ViewModel.Decks = response.Content.ReadAsAsync<IEnumerable<DeckDto>>().Result;
 
-            return View(decks);
+            return View(ViewModel);
         }
 
         //GET: Deck/Details/1
@@ -76,12 +82,17 @@ namespace DeckDJ.Controllers
         {
             GetApplicationCookie();
 
-            DetailsDeck ViewModel = new DetailsDeck();
+            AdminDecks ViewModel = new AdminDecks();
+
+            
 
             string url = "DeckData/FindDeck/" + id;
             HttpResponseMessage response = client.GetAsync(url).Result;
 
             DeckDto selectedDeck = response.Content.ReadAsAsync<DeckDto>().Result;
+
+            if (User.Identity.IsAuthenticated && User.IsInRole("Admin") || User.Identity.GetUserId() == selectedDeck.UserId) ViewModel.IsAdmin = true;
+            else ViewModel.IsAdmin = false;
 
             ViewModel.Deck = selectedDeck;
 

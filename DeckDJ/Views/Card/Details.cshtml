@@ -1,37 +1,46 @@
-﻿@model DeckDJ.Models.CardDto
+﻿@model DeckDJ.Models.AdminCards
 @{
     ViewBag.Title = "Details";
 }
 
+
+
+
 <div id="containershow">
     <nav>
         <a class="navlink" href="/Card/List">Back To Cards</a>
-        <a class="dellink" href="/Card/DeleteConfirm/@Model.Id">Delete</a>
-        <a class="navlink" href="/Card/Edit/@Model.Id">Update</a>
+        @if (Model.IsAdmin)
+        {
+            <nav>
+                <a class="dellink" href="/Card/DeleteConfirm/@Model.Card.Id">Delete</a>
+                <a class="navlink" href="/Card/Edit/@Model.Card.Id">Update</a>
+            </nav>
+        }
+        
     </nav>
-    <h2>@Model.Name</h2>
+    <h2>@Model.Card.Name</h2>
 </div>
-<div>ID: @Model.Id</div>
-<div>Number: @Model.Number</div>
-<div>Name: @Model.Name</div>
-<div>Card Frame: @Model.CardFrame</div>
-<div>Card Type: @Model.CardType</div>
-<div>Attribute: @Model.Attribute</div>
-<div>Level: @Model.Level</div>
-<div>Scale: @Model.Scale</div>
-<div>Attack: @Model.Attack</div>
-<div>Defense: @Model.Defense</div>
+<div>ID: @Model.Card.Id</div>
+<div>Number: @Model.Card.Number</div>
+<div>Name: @Model.Card.Name</div>
+<div>Card Frame: @Model.Card.CardFrame</div>
+<div>Card Type: @Model.Card.CardType</div>
+<div>Attribute: @Model.Card.Attribute</div>
+<div>Level: @Model.Card.Level</div>
+<div>Scale: @Model.Card.Scale</div>
+<div>Attack: @Model.Card.Attack</div>
+<div>Defense: @Model.Card.Defense</div>
 
 <div>
     <h3>Decks that use this Card</h3>
     <table class="table">
-        <thead>
-            <th scope="col">ID</th>
-            <th scope="col">DeckId</th>
-            <th scope="col">DeckName</th>
-            <th scope="col">UserId</th>
-            <th scope="col">Category</th>
-        </thead>
+        <tr>
+        <th scope="col">ID</th>
+        <th scope="col">DeckId</th>
+        <th scope="col">DeckName</th>
+        <th scope="col">UserId</th>
+        <th scope="col">Category</th>
+        </tr>
         <tbody id="table-data">
         </tbody>
     </table>
@@ -40,7 +49,7 @@
 <script src="~/Scripts/admindeck.js"></script>
 <script>
     window.onload = function () {
-        getDecksForCards(@Html.Raw(Model.Id));
+        getDecksForCards(@Html.Raw(Model.Card.Id));
     }
 </script>
 

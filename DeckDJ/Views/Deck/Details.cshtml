@@ -1,4 +1,4 @@
-﻿@model DeckDJ.Models.DetailsDeck
+﻿@model DeckDJ.Models.AdminDecks
 @{
     ViewBag.Title = "Details";
 }
@@ -6,8 +6,11 @@
 <div id="containershow">
     <nav>
         <a class="navlink" href="/Deck/List">Back To Decks</a>
+        @if (Model.IsAdmin)
+        {
         <a class="dellink" href="/Deck/DeleteConfirm/@Model.Deck.DeckId">Delete</a>
         <a class="navlink" href="/Deck/Edit/@Model.Deck.DeckId">Update</a>
+        }
     </nav>
     <h2>@Model.Deck.DeckName</h2>
 </div>
@@ -39,17 +42,20 @@
 <div>
     <h3>Deck Playlist</h3>
     <div>
-        <h4>Add audio to Deck</h4>
-        <form method="POST" action="/Deck/Associate/@Model.Deck.DeckId">
-            <select name="AudioId">
-                @foreach (var audio in Model.OtherAudios)
-                {
-                    <option value="@audio.AudioId">@audio.AudioName - @audio.AudioUploaderId</option>
-                }
-            </select>
-            <input type="Submit" value="Add audio" />
-        </form>
-    </div>
+        @if (Model.IsAdmin)
+        {
+            <h4>Add audio to Deck</h4>
+            <form method="POST" action="/Deck/Associate/@Model.Deck.DeckId">
+                <select name="AudioId">
+                    @foreach (var audio in Model.OtherAudios)
+                    {
+                        <option value="@audio.AudioId">@audio.AudioName - @audio.AudioUploaderId</option>
+                    }
+                </select>
+                <input type="Submit" value="Add audio" />
+            </form>
+        }
+        </div>
     <table class="table">
         <tr>
             <th scope="col">Audio Id</th>

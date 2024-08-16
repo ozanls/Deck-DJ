@@ -85,7 +85,7 @@ namespace DeckDJ.Controllers
         // GET: Card/List?PageNum={PageNum}
         public ActionResult List(int PageNum = 0)
         {
-            ListCards ViewModel = new ListCards();
+            AdminCards ViewModel = new AdminCards();
 
             if (User.Identity.IsAuthenticated && User.IsInRole("Admin")) ViewModel.IsAdmin = true;
             else ViewModel.IsAdmin = false;
@@ -119,12 +119,17 @@ namespace DeckDJ.Controllers
         // GET: Card/Details/1
         public ActionResult Details(int id)
         {
+            AdminCards ViewModel = new AdminCards();
+
+            if (User.Identity.IsAuthenticated && User.IsInRole("Admin")) ViewModel.IsAdmin = true;
+            else ViewModel.IsAdmin = false;
+
             string url = "FindCard/" + id;
             HttpResponseMessage response = client.GetAsync(url).Result;
 
-            CardDto selectedCard = response.Content.ReadAsAsync<CardDto>().Result;
+            ViewModel.Card = response.Content.ReadAsAsync<CardDto>().Result; 
 
-            return View(selectedCard);
+            return View(ViewModel);
         }
 
         // GET: Card/Edit/1
