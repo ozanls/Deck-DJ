@@ -85,12 +85,35 @@ namespace DeckDJ.Controllers
         // GET: Card/List?PageNum={PageNum}
         public ActionResult List(int PageNum = 0)
         {
-            string url = "ListCards";
+            ListCards ViewModel = new ListCards();
+
+            if (User.Identity.IsAuthenticated && User.IsInRole("Admin")) ViewModel.IsAdmin = true;
+            else ViewModel.IsAdmin = false;
+
+            string url = "GetCardCount";
             HttpResponseMessage response = client.GetAsync(url).Result;
+
+            int CardCount = response.Content.ReadAsAsync<int>().Result;
+            int PerPage = 12;
+            int MaxPage = (int)Math.Ceiling((decimal)CardCount / PerPage) - 1;
+
+            if(MaxPage < 0) MaxPage = 0;
+            if(PageNum < 0) PageNum = 0;
+            if(PageNum > MaxPage) PageNum = MaxPage;
+
+            int StartIndex = PerPage * PageNum;
+
+            ViewModel.PageNum = PageNum;
+            ViewModel.PageSummary = " " + (PageNum + 1) + " of " + (MaxPage + 1) + " ";
+
+            url = "ListCardsPage/" + StartIndex + "/"+PerPage;
+            response = client.GetAsync(url).Result;
 
             IEnumerable<CardDto> cards = response.Content.ReadAsAsync<IEnumerable<CardDto>>().Result;
 
-            return View(cards);
+            ViewModel.Cards = cards;
+
+            return View(ViewModel);
         }
 
         // GET: Card/Details/1

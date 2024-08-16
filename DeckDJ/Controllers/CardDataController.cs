@@ -46,6 +46,17 @@ namespace DeckDJ.Controllers
         }
 
         /// <summary>
+        /// returns the count of cards in the database. Used for pagination.
+        /// </summary>
+        /// <returns>integer representing the number of card records</returns>
+        /// <example>GET: api/CardData/GetCardCount</example>
+        [HttpGet]
+        public int GetAnimalCount()
+        {
+            return db.Cards.Count();
+        }
+
+        /// <summary>
         /// Returns all cards in the system.
         /// </summary>
         /// <returns>
@@ -76,6 +87,29 @@ namespace DeckDJ.Controllers
                 Defense = c.Defense,
             }));
             return CardDtoList;
+        }
+
+        [HttpGet]
+        [Route("api/CardData/ListCardsPage/{StartIndex}/{PerPage}")]
+        public IHttpActionResult ListCardsPage(int StartIndex, int PerPage)
+        {
+            List<Card> Cards = db.Cards.OrderBy(c => c.Id).Skip(StartIndex).Take(PerPage).ToList();
+            List<CardDto> CardDtos = new List<CardDto>();
+
+            Cards.ForEach(c => CardDtos.Add(new CardDto()
+            {
+                Id = c.Id,
+                Number = c.Number,
+                Name = c.Name,
+                CardFrame = c.CardFrame,
+                CardType = c.CardType,
+                Attribute = c.Attribute,
+                Level = c.Level,
+                Scale = c.Scale,
+                Attack = c.Attack,
+                Defense = c.Defense
+            }));
+            return Ok(CardDtos);
         }
 
         /// <summary>

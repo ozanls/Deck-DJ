@@ -1,26 +1,29 @@
-﻿@model IEnumerable<DeckDJ.Models.CardDto>
+﻿@model DeckDJ.Models.ListCards
 @{
     ViewBag.Title = "List";
 }
-<nav>
-    <a class="dellink" href="/Card/New/">New Card</a>
-</nav>
+@if (Model.IsAdmin)
+{
+    <nav>
+        <a class="dellink" href="/Card/New/">New Card</a>
+    </nav>
+}
 <h2>List</h2>
 <table class="table">
-    <thead>
-    <th scope="col">ID</th>
-    <th scope="col">Card Name</th>
-    <th scope="col">Card Number</th>
-    <th scope="col">Card Frame</th>
-    <th scope="col">Type</th>
-    <th scope="col">Attribute</th>
-    <th scope="col">Level</th>
-    <th scope="col">Scale</th>
-    <th scope="col">Attack</th>
-    <th scope="col">Defense</th>
-    </thead>
+    <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Card Name</th>
+        <th scope="col">Card Number</th>
+        <th scope="col">Card Frame</th>
+        <th scope="col">Type</th>
+        <th scope="col">Attribute</th>
+        <th scope="col">Level</th>
+        <th scope="col">Scale</th>
+        <th scope="col">Attack</th>
+        <th scope="col">Defense</th>
+    </tr>
     <tbody id="table-data">
-        @foreach (var card in Model)
+        @foreach (var card in Model.Cards)
         {
             <tr>
                 <th scope="row"><a href="/Card/Details/@card.Id">@card.Id</a></th>
@@ -37,3 +40,13 @@
         }
     </tbody>
 </table>
+<div>
+    @if (Model.Cards.Count() > 0 && Model.PageNum != null)
+    {
+        int PrevPage = Convert.ToInt32(Model.PageNum) - 1;
+        int NextPage = Convert.ToInt32(Model.PageNum) + 1;
+        @Html.ActionLink("Prev", "List", new { PageNum = PrevPage })
+        @Model.PageSummary
+        @Html.ActionLink("Next", "List", new { PageNum = NextPage })
+    }
+</div>
