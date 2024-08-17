@@ -10,6 +10,21 @@ Deck DJ is the combination of these two products, by associating different genre
 specific card types found in Yu-Gi-Oh, once users have created a deck, they will also have a
 random playlist generated based on the cards found in their deck.
 
+##Features
+  - Admin Functionality
+    - Cards and Categories are Read-Only for non-admin users 
+  - File upload for audio
+  - Pagination for Cards
+
+##Examples
+### Create Card
+Creating a card with use the API endpoint /api/CardData/AddCard to add a card into the database
+![Create a Card WebPage](/assets/images/create.png)
+
+### Viewing Deck Details
+Get the details of a deck with the API endpoint /api/DeckData/
+![View Deck WebPage](/assets/images/create.png)
+
 ## Work Distribution:
 
 ### Kwasi:
@@ -18,10 +33,13 @@ random playlist generated based on the cards found in their deck.
   - Displaying that on the Deck Details page  
   - Associating audio with decks  
   - Final Debugging
+  - Pagination
+  - Admin
 
 ### Ozan:  
   - Intitial Combination of Passion Projects  
   - Listing decks associated with specific audio  
   - Displaying that to the Audio Details page  
   - Unassociating audio with decks
+  - File Upload
   
