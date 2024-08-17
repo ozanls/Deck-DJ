@@ -19,11 +19,11 @@ random playlist generated based on the cards found in their deck.
 ##Examples
 ### Create Card
 Creating a card with use the API endpoint /api/CardData/AddCard to add a card into the database
-![Create a Card WebPage](/assets/images/create.png)
+![Create a Card WebPage](/assets/create.png)
 
 ### Viewing Deck Details
 Get the details of a deck with the API endpoint /api/DeckData/
-![View Deck WebPage](/assets/images/create.png)
+![View Deck WebPage](/assets/details.png)
 
 ## Work Distribution:
 
