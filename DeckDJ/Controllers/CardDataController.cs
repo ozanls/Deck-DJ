@@ -89,6 +89,18 @@ namespace DeckDJ.Controllers
             return CardDtoList;
         }
 
+        /// <summary>
+        /// Returns {PerPage} cards in the system starting from {StartIndex} when sorted by CardID. 
+        /// </summary>
+        /// <param name="StartIndex">The index of the first card returned when sorted by CardID</param>
+        /// <param name="PerPage">The number of pages returned</param>
+        /// <returns>
+        /// HEADER: 200 (OK)
+        /// CONTENT: some cards in the database.
+        /// </returns>
+        /// <example>
+        /// GET: api/CardData/ListCardsPage/4/10
+        /// </example>
         [HttpGet]
         [Route("api/CardData/ListCardsPage/{StartIndex}/{PerPage}")]
         public IHttpActionResult ListCardsPage(int StartIndex, int PerPage)

@@ -98,7 +98,7 @@ namespace DeckDJ.Controllers
         /// </returns>
         ///<param name="id">The primary key of the specified deck</param>
         /// <example>
-        /// GET: api/audiodata/listaudios
+        /// GET: api/audiodata/ListAudioForDeck/1
         /// </example>
         [HttpGet]
         [ResponseType(typeof(AudioDto))]
@@ -294,7 +294,19 @@ namespace DeckDJ.Controllers
             return CreatedAtRoute("DefaultApi", new { id = audio.AudioId }, audio);
         }
 
-        // POST: api/AudioData/DeleteAudio/5
+        /// <summary>
+        /// Deletes an audio from the system by it's ID.
+        /// </summary>
+        /// <param name="id">The primary key of the audio</param>
+        /// <returns>
+        /// HEADER: 200 (OK)
+        /// or
+        /// HEADER: 404 (NOT FOUND)
+        /// </returns>
+        /// <example>
+        /// POST: api/AudioData/DeleteAudio/1
+        /// FORM DATA: (empty)
+        /// </example>
         [ResponseType(typeof(Audio))]
         [HttpPost]
         [Route("api/AudioData/DeleteAudio/{id}")]
@@ -313,7 +325,19 @@ namespace DeckDJ.Controllers
             return Ok();
         }
 
-        // Upload Audio Data
+        /// <summary>
+        /// Saves uploaded audio and associates it with the audio system with matching ID.
+        /// </summary>
+        /// <param name="id">The primary key of the audio data to associate</param>
+        /// <returns>
+        /// HEADER: 200 (OK)
+        /// or
+        /// HEADER: 404 (NOT FOUND)
+        /// </returns>
+        /// <example>
+        /// POST: api/AudioData/UploadAudioData/1
+        /// FORM DATA: Audio file
+        /// </example>
         [HttpPost]
         [Route("api/AudioData/UploadAudioData/{id}")]
 

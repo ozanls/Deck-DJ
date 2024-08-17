@@ -48,21 +48,6 @@ namespace DeckDJ.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        //POST: /api/DeckData/CreateDeck
-        [ResponseType(typeof(Deck))]
-        [HttpPost]
-        [Route("api/DeckData/CreateDeck/")]
-        public int CreateDeck(Deck NewDeck)
-        {
-            if (!ModelState.IsValid)
-            {
-                return -1;
-            }
-            db.Decks.Add(NewDeck);
-            db.SaveChanges();
-            return NewDeck.DeckId;
-        }
-
         /// <summary>
         /// Returns all decks in the system.
         /// </summary>
@@ -118,15 +103,15 @@ namespace DeckDJ.Controllers
         }
 
         ///<summary>
-        /// Returns all decks associated with a audio
+        /// Returns all not decks associated with a audio
         /// </summary>
         /// <returns>
         /// HEADER: 200 (OK)
-        /// CONTENT: all decks related to the audio
+        /// CONTENT: all decks not related to the audio
         /// </returns>
         ///<param name="id">The primary key of the specified audio</param>
         /// <example>
-        /// GET: api/DeckData/ListDecksForAudio/1
+        /// GET: api/DeckData/ListDecksNotForAudio/1
         /// </example>
         [HttpGet]
         [ResponseType(typeof(AudioDto))]
@@ -154,7 +139,7 @@ namespace DeckDJ.Controllers
         /// </returns>
         ///<param name="id">The primary key of the specified deck</param>
         /// <example>
-        /// GET: api/audiodata/listaudios
+        /// GET: api/DeckData/ListAudioNotForDeck
         /// </example>
         [HttpGet]
         [ResponseType(typeof(AudioDto))]
@@ -319,45 +304,6 @@ namespace DeckDJ.Controllers
             }
 
             SelectedDeck.Audios.Add(SelectedAudio);
-            db.SaveChanges();
-
-            return Ok();
-        }
-
-        /// <summary>
-        /// Removes an association between a deck and a particular audio
-        /// </summary>
-        /// <param name="deckid">The deck ID primary key</param>
-        /// <param name="audioid">The audio ID primary key</param>
-        /// <returns>
-        /// HEADER: 200 (OK)
-        /// or
-        /// HEADER: 404 (NOT FOUND)
-        /// </returns>
-        /// <example>
-        /// POST api/DeckData/UnAssociateDeckwithAudio/9/1
-        /// </example>
-        [HttpPost]
-        [Route("api/DeckData/UnAssociateDeckwithAudio/{deckid}/{audioid}")]
-        public IHttpActionResult UnAssociateDeckWithAudio(int DeckId, int AudioId)
-        {
-
-            Deck SelectedDeck = db.Decks.Include(a => a.Audios).Where(d => d.DeckId == DeckId).FirstOrDefault();
-            Audio SelectedAudio = db.Audios.Find(AudioId);
-
-            if (SelectedDeck == null || SelectedAudio == null)
-            {
-                return NotFound();
-            }
-
-            Debug.WriteLine("input deck id is: " + DeckId);
-            Debug.WriteLine("selected deck name is: " + SelectedDeck.DeckName);
-            Debug.WriteLine("input audio id is: " + AudioId);
-            Debug.WriteLine("selected audio name is: " + SelectedAudio.AudioName);
-
-            //todo: verify that the audio actually is keeping track of the deck
-
-            SelectedDeck.Audios.Remove(SelectedAudio);
             db.SaveChanges();
 
             return Ok();

@@ -54,7 +54,7 @@ namespace DeckDJ.Controllers
         /// CONTENT: all Combo Pieces in the database.
         /// </returns>
         /// <example>
-        /// GET: api/ComboPieceData/ListComboPieces
+        /// GET: api/ComboPieceData/ListComboPiece
         /// </example>
         [HttpGet]
         [Route("api/ComboPieceData/ListComboPiece")]
@@ -170,7 +170,7 @@ namespace DeckDJ.Controllers
         }
 
         /// <summary>
-        /// Returns all combo pieces in the system that belong use a specific card.
+        /// Returns all combo pieces in the system that use a specific card.
         /// </summary>
         /// <returns>
         /// HEADER: 200 (OK)
@@ -286,7 +286,7 @@ namespace DeckDJ.Controllers
         /// </returns>
         /// <param name="Cardid">The id of the card found in the decks pieces</param>
         /// <example>
-        /// GET: api/ComboData/GetComboPieces/1
+        /// GET: api/ComboData/GetDecksForCard/1
         /// </example>
         [HttpGet]
         [Route("api/ComboPieceData/GetDecksForCard/{id}")]
