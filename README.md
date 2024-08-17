@@ -10,13 +10,13 @@ Deck DJ is the combination of these two products, by associating different genre
 specific card types found in Yu-Gi-Oh, once users have created a deck, they will also have a
 random playlist generated based on the cards found in their deck.
 
-##Features
+## Features
   - Admin Functionality
     - Cards and Categories are Read-Only for non-admin users 
   - File upload for audio
   - Pagination for Cards
 
-##Examples
+## Examples
 ### Create Card
 Creating a card with use the API endpoint /api/CardData/AddCard to add a card into the database
 ![Create a Card WebPage](/assets/create.png)
